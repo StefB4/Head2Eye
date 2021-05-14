@@ -1,0 +1,677 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.11.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+```{python}
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+
+import pickle as pkl
+import keras
+from keras.models import Sequential, Model, load_model
+from keras.layers import LSTM, Dense, RepeatVector, TimeDistributed, Input, BatchNormalization, \
+    multiply, concatenate, Flatten, Activation, dot
+from keras.optimizers import Adam
+from keras.utils import plot_model
+from keras.callbacks import EarlyStopping
+import pydot as pyd
+from keras.utils.vis_utils import plot_model, model_to_dot
+keras.utils.vis_utils.pydot = pyd
+import os
+import pandas as pd
+import json
+
+from scipy import signal 
+
+import glob
+```
+
+```{python}
+
+```
+
+```{python}
+def read_normalized_json_to_df(filepath):
+    full_file_df = ""
+    with open(filepath, 'r', encoding="utf-8") as json_file:
+        json_full = json.load(json_file)
+    full_file_df = pd.json_normalize(json_full)
+    return full_file_df
+```
+
+```{python}
+# Read post recorded reference data
+REFERENCE_DATA_PATH = "./post_recorded_reference_data/Build/All_Failed/"
+print("Total number of reference files: " + str(len(os.listdir(REFERENCE_DATA_PATH)))) 
+print("Loading reference files...")
+
+reference_input_files = {}
+reference_eyetracking_files = {}
+reference_scenedata_files = {}
+reference_participant_calibration_file = {}
+reference_participant_calibration_file['filename'] = glob.glob(REFERENCE_DATA_PATH + "/*ParticipantCalibrationData.txt")[0]
+reference_participant_calibration_file['full_df'] = read_normalized_json_to_df(glob.glob(REFERENCE_DATA_PATH + "/*ParticipantCalibrationData.txt")[0])
+for filename in glob.glob(REFERENCE_DATA_PATH + "/*_Input*.txt"):
+    if "Westbrueck" in filename:
+        token = "Westbrueck"
+    elif "MountainRoad" in filename:
+        token = "MountainRoad"
+    elif "CountryRoad" in filename:
+        token = "CountryRoad"
+    elif "Autobahn" in filename:
+        token = "Autobahn"
+    else:  # not defined 
+        continue # in the loop 
+    reference_input_files[token] = {}
+    reference_input_files[token]["filename"] = filename
+    reference_input_files[token]["full_df"] = read_normalized_json_to_df(filename)
+for filename in glob.glob(REFERENCE_DATA_PATH + "/*_EyeTracking*.txt"):
+    if "Westbrueck" in filename:
+        token = "Westbrueck"
+    elif "MountainRoad" in filename:
+        token = "MountainRoad"
+    elif "CountryRoad" in filename:
+        token = "CountryRoad"
+    elif "Autobahn" in filename:
+        token = "Autobahn"  
+    else:  # not defined 
+        continue # in the loop     
+    reference_eyetracking_files[token] = {}
+    reference_eyetracking_files[token]["filename"] = filename
+    reference_eyetracking_files[token]["full_df"] = read_normalized_json_to_df(filename)
+for filename in glob.glob(REFERENCE_DATA_PATH + "/*_SceneData*.txt"):
+    if "Westbrueck" in filename:
+        token = "Westbrueck"
+    elif "MountainRoad" in filename:
+        token = "MountainRoad"
+    elif "CountryRoad" in filename:
+        token = "CountryRoad"
+    elif "Autobahn" in filename:
+        token = "Autobahn"     
+    else:  # not defined 
+        continue # in the loop  
+    reference_scenedata_files[token] = {}
+    reference_scenedata_files[token]["filename"] = filename
+    reference_scenedata_files[token]["full_df"] = read_normalized_json_to_df(filename)
+
+print("Finished loading reference files.")
+```
+
+```{python}
+# Extract most important event information 
+for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+    reference_scenedata_files[area]["number_of_events"] = len(reference_scenedata_files[area]["full_df"]["EventBehavior"][0])
+    reference_scenedata_files[area]["events"] = {}
+    for idx, event in enumerate(reference_scenedata_files[area]["full_df"]["EventBehavior"][0]):
+        reference_scenedata_files[area]["events"][idx] = {'name':event["EventName"],'start':event["StartofEventTimeStamp"],'stop':event["EndOfEventTimeStamp"]}
+```
+
+```{python}
+print(reference_scenedata_files["Westbrueck"]["events"])
+print(reference_eyetracking_files["Westbrueck"]["full_df"]["UnixTimeStamp"][100])
+print(reference_eyetracking_files["Westbrueck"]["full_df"]["UnixTimeStamp"][101])
+print(reference_eyetracking_files["Westbrueck"]["full_df"]["UnixTimeStamp"].iloc[-1])
+```
+
+```{python}
+# Todo 
+# cut events from reference input files
+# rebase timestamps to start at 0 
+# per path until event 
+# resample/ add datapoints in 0.01s intervals (probably, as 90 Hz is roughly 0.011s and 90 Hz is max frequ) 
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+# Read data 
+
+DATA_PATH = "./data/"
+print(os.listdir(DATA_PATH))
+full_file_path = os.path.join(DATA_PATH, os.listdir(DATA_PATH)[0]) 
+with open(full_file_path, 'r', encoding="utf-8") as json_file:
+    json_full = json.load(json_file)
+full_file_df = pd.json_normalize(json_full)
+```
+
+```{python}
+# Drop some stuff from the dataframe 
+
+reduced_df = full_file_df.copy(deep=True)
+reduced_df.drop(columns=["hitObjects","LeftEyeIsBlinkingWorld","RightEyeIsBlinkingWorld","LeftEyeIsBlinkingLocal","RightEyeIsBlinkingLocal"],inplace=True)
+reduced_df.drop(columns=["TobiiTimeStamp","FPS",],inplace=True)
+
+# Convert unixtimestamp to datetime 
+reduced_df['DateTime'] = pd.to_datetime(reduced_df['UnixTimeStamp'],unit='s')
+
+reduced_df.columns
+```
+
+```{python}
+print(reduced_df["EyePosLocalCombined.x"].min())
+print(reduced_df["EyePosLocalCombined.x"].max())
+print(reduced_df["EyePosLocalCombined.y"].min())
+print(reduced_df["EyePosLocalCombined.y"].max())
+print(reduced_df["EyePosLocalCombined.z"].min())
+print(reduced_df["EyePosLocalCombined.z"].max())
+
+print(reduced_df['DateTime'][0])
+print(reduced_df['DateTime'][1])
+print(reduced_df['DateTime'][2])
+print(reduced_df['DateTime'][50])
+```
+
+```{python}
+# TODO Resample to constant time bins for proper FFT 
+# Use Lomb-Scargle Periodogram to compare to spectogram of resample data 
+
+
+f = np.linspace(0.01, 1000, 1000000) # start, stop, number of pts; modify this! 
+pgram = signal.lombscargle(reduced_df["UnixTimeStamp"], reduced_df["HmdPosition.x"], f) # f, normalize=True
+
+plt.plot(f, pgram)
+```
+
+```{python}
+resampled_df = reduced_df.resample('0.1S',on="DateTime").mean() # 0.05S too small 
+
+resampled_df.head()
+```
+
+```{python}
+fig, ax = plt.subplots(nrows=3, ncols=1, figsize=(6,6), dpi=120)
+
+names_x = ["HmdPosition.x","HmdPosition.y","HmdPosition.z"]
+names_y = ["EyePosWorldCombined.x","EyePosWorldCombined.y","EyePosWorldCombined.z"]
+
+for idx, row in enumerate(ax):
+        
+        sample_freqs, csd = signal.csd(x=resampled_df[names_x[idx]],y=resampled_df[names_y[idx]],nperseg=256)
+        row.semilogy(sample_freqs, np.abs(csd))
+        row.set_xlabel("frequency")
+        row.set_ylabel("CSD")
+        row.set_title(names_x[idx] + " - " + names_y[idx])
+
+        
+fig.tight_layout()
+plt.show()
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+# train and test data 
+# format, full array with columns holding the data: 
+# IN: HmdPosition.x, HmdPosition.y, HmdPosition.z, NoseVector.x, NoseVector.y, NoseVector.z
+# OUT: EyeDirWorldCombined.x, EyeDirWorldCombined.y, EyeDirWorldCombined.z
+
+
+#### HMDPosition is affected by moving car!
+# "HmdPosition.x","HmdPosition.y","HmdPosition.z"
+# Possibly detrend? Over all subjects? 
+
+
+train_and_test_in = reduced_df[["NoseVector.x","NoseVector.y","NoseVector.z"]].to_numpy()
+train_and_test_target = reduced_df[["EyeDirWorldCombined.x","EyeDirWorldCombined.y","EyeDirWorldCombined.z"]].to_numpy()
+
+```
+
+```{python}
+plt.plot(range(len(train_and_test_in)), train_and_test_in, label=["NoseVector.x","NoseVector.y","NoseVector.z"])
+plt.plot(range(len(train_and_test_target)), train_and_test_target, label=["EyeDirWorldCombined.x","EyeDirWorldCombined.y","EyeDirWorldCombined.z"])
+
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+# Things todo 
+# Possibly detrend
+# Normalize (between -1 and 1), already the case. 
+
+train_test_ratio = 0.8
+split_idx_in = int(len(train_and_test_in) * train_test_ratio)
+split_idx_target = int(len(train_and_test_target) * train_test_ratio)
+
+```
+
+```{python}
+# Generate dataset 
+
+train_in = train_and_test_in[0:split_idx_in]
+test_in = train_and_test_in[split_idx_in:]
+train_target = train_and_test_target[0:split_idx_target]
+test_target = train_and_test_target[split_idx_target:]
+
+print(train_and_test_in.shape)
+print(train_in.shape, test_in.shape)
+print(train_and_test_target.shape)
+print(train_target.shape, test_target.shape)
+```
+
+```{python}
+# Truncate dataset 
+
+def truncate(data, window_size):
+    result = []
+    i = 0
+    while (i + window_size) <= len(data):
+        result.append(data[i:i+window_size])
+        i += 1
+    return np.array(result)
+
+
+truncated_train_in = truncate(train_in,200) # use 200 data points for training input
+truncated_train_target = truncate(train_target,200) # use same number (200) for training output, i.e. generated
+truncated_test_in = truncate(test_in,200)
+truncated_test_target = truncate(test_target,200)
+
+print(truncated_train_in.shape)
+print(truncated_train_target.shape)
+print(truncated_test_in.shape)
+print(truncated_test_target.shape)
+```
+
+```{python}
+# Build DNN
+
+n_hidden = 100
+
+input_train = Input(shape=(truncated_train_in.shape[1], truncated_train_in.shape[2]))
+output_train = Input(shape=(truncated_train_target.shape[1], truncated_train_target.shape[2]))
+print(input_train)
+print(output_train)
+
+
+encoder_last_h1, encoder_last_h2, encoder_last_c = LSTM(
+ n_hidden, activation='elu', dropout=0.2, recurrent_dropout=0.2, 
+ return_sequences=False, return_state=True)(input_train)
+print(encoder_last_h1)
+print(encoder_last_h2)
+print(encoder_last_c)
+
+
+
+```
+
+```{python}
+#encoder_last_h1 = BatchNormalization(momentum=0.6)(encoder_last_h1)
+#encoder_last_c = BatchNormalization(momentum=0.6)(encoder_last_c)
+
+
+decoder = RepeatVector(output_train.shape[1])(encoder_last_h1)
+decoder = LSTM(n_hidden, activation='elu', dropout=0.2, recurrent_dropout=0.2, return_state=False, return_sequences=True)(
+    decoder, initial_state=[encoder_last_h1, encoder_last_c])
+print(decoder)
+
+
+out = TimeDistributed(Dense(output_train.shape[2]))(decoder)
+print(out)
+
+model = Model(inputs=input_train, outputs=out)
+opt = Adam(lr=0.01, clipnorm=1)
+model.compile(loss='mean_squared_error', optimizer=opt, metrics=['mae'])
+model.summary()
+
+plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+
+```
+
+```{python}
+history = None
+epc = 2
+es = EarlyStopping(monitor='val_loss', mode='min', patience=50)
+history = model.fit(truncated_train_in, truncated_train_target, validation_split=0.2, 
+                    epochs=epc, verbose=1, callbacks=[es], 
+                    batch_size=100)
+train_mae = history.history['mae']
+valid_mae = history.history['val_mae']
+ 
+model.save('model_forecasting_seq2seq.h5')
+```
+
+```{python}
+
+```
+
+```{python}
+plt.plot(train_mae, label='train mae'), 
+plt.plot(valid_mae, label='validation mae')
+plt.ylabel('mae')
+plt.xlabel('epoch')
+plt.title('train vs. validation accuracy (mae)')
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+# possibly detrend etc
+```
+
+```{python}
+train_pred = model.predict(truncated_train_in)
+test_pred = model.predict(truncated_test_in)
+print(train_pred.shape, test_pred.shape)
+train_true = truncated_train_target
+test_true = truncated_test_target
+print(train_true.shape, test_true.shape)
+```
+
+```{python}
+train_pred = train_pred[~np.isnan(train_pred)]
+train_true = train_true[~np.isnan(train_true)]
+plt.figure(figsize=(15, 4))
+plt.hist(train_pred.flatten(), bins=100, color='orange', alpha=0.5, label='trainpred')
+plt.hist(train_true.flatten(), bins=100, color='green', alpha=0.5, label='traintrue')
+plt.legend()
+plt.title('value distribution: train')
+plt.show()
+
+print(train_pred)
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+n_ = 1000
+t = np.linspace(0, 50*np.pi, n_)
+# pattern + trend + noise
+x1 = sum([20*np.sin(i*t+np.pi) for i in range(5)]) + 0.01*(t**2) + np.random.normal(0, 6, n_)
+x2 = sum([15*np.sin(2*i*t+np.pi) for i in range(5)]) + 0.5*t + np.random.normal(0, 6, n_)
+plt.figure(figsize=(15, 4))
+plt.plot(range(len(x1)), x1, label='x1')
+plt.plot(range(len(x2)), x2, label='x2')
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+train_ratio = 0.8
+train_len = int(train_ratio * t.shape[0])
+print(train_len)
+```
+
+```{python}
+# Calculate trend
+
+x_index = np.array(range(len(t)))
+
+x1_trend_param = np.polyfit(x_index[:train_len], x1[:train_len], 2)
+x2_trend_param = np.polyfit(x_index[:train_len], x2[:train_len], 1)
+print(x1_trend_param)
+print(x2_trend_param)
+
+
+x1_trend = (x_index**2)*x1_trend_param[0]+x_index*x1_trend_param[1]+x1_trend_param[2]
+x2_trend = x_index*x2_trend_param[0]+x2_trend_param[1]
+
+
+plt.figure(figsize=(15, 4))
+plt.plot(range(len(x1)), x1, label='x1')
+plt.plot(range(len(x1_trend)), x1_trend, linestyle='--', label='x1_trend')
+plt.plot(range(len(x2)), x2, label='x2')
+plt.plot(range(len(x2_trend)), x2_trend, linestyle='--', label='x2_trend')
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+# Detrend
+
+x1_detrend = x1 - x1_trend
+x2_detrend = x2 - x2_trend
+plt.figure(figsize=(15, 4))
+plt.plot(range(len(x1_detrend)), x1_detrend, label='x2_detrend')
+plt.plot(range(len(x2_detrend)), x2_detrend, label='x2_detrend')
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+# Combine sequences
+
+x_lbl = np.column_stack([x1_detrend, x2_detrend, x_index, [1]*train_len+[0]*(len(x_index)-train_len)])
+print(x_lbl.shape)
+print(x_lbl)
+
+# Calculate maxs 
+x_train_max = x_lbl[x_lbl[:, 3]==1, :2].max(axis=0)
+x_train_max = x_train_max.tolist()+[1]*2  # only normalize for the first 2 columns
+print(x_train_max)
+
+# Normalize 
+x_normalize = np.divide(x_lbl, x_train_max)
+print(x_normalize)
+
+plt.figure(figsize=(15, 4))
+plt.plot(range(train_len), x_normalize[:train_len, 0], label='x1_train_normalized')
+plt.plot(range(train_len), x_normalize[:train_len, 1], label='x2_train_normalized')
+plt.plot(range(train_len, len(x_normalize)), x_normalize[train_len:, 0], label='x1_test_normalized')
+plt.plot(range(train_len, len(x_normalize)), x_normalize[train_len:, 1], label='x2_test_normalized')
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+
+def truncate(x, feature_cols=range(3), target_cols=range(3), label_col=3, train_len=100, test_len=20):
+    in_, out_, lbl = [], [], []
+    for i in range(len(x)-train_len-test_len+1):
+        in_.append(x[i:(i+train_len), feature_cols].tolist())
+        out_.append(x[(i+train_len):(i+train_len+test_len), target_cols].tolist())
+        lbl.append(x[i+train_len, label_col])
+    return np.array(in_), np.array(out_), np.array(lbl)
+X_in, X_out, lbl = truncate(x_normalize, feature_cols=range(3), target_cols=range(3), 
+                            label_col=3, train_len=200, test_len=20)
+print(X_in.shape, X_out.shape, lbl.shape)
+
+
+X_input_train = X_in[np.where(lbl==1)]
+X_output_train = X_out[np.where(lbl==1)]
+X_input_test = X_in[np.where(lbl==0)]
+X_output_test = X_out[np.where(lbl==0)]
+print(X_input_train.shape, X_output_train.shape)
+print(X_input_test.shape, X_output_test.shape)
+```
+
+```{python}
+n_hidden = 100
+
+input_train = Input(shape=(X_input_train.shape[1], X_input_train.shape[2]-1))
+output_train = Input(shape=(X_output_train.shape[1], X_output_train.shape[2]-1))
+print(input_train)
+print(output_train)
+
+
+encoder_last_h1, encoder_last_h2, encoder_last_c = LSTM(
+ n_hidden, activation='elu', dropout=0.2, recurrent_dropout=0.2, 
+ return_sequences=False, return_state=True)(input_train)
+print(encoder_last_h1)
+print(encoder_last_h2)
+print(encoder_last_c)
+
+```
+
+```{python}
+
+encoder_last_h1 = BatchNormalization(momentum=0.6)(encoder_last_h1)
+encoder_last_c = BatchNormalization(momentum=0.6)(encoder_last_c)
+
+
+decoder = RepeatVector(output_train.shape[1])(encoder_last_h1)
+decoder = LSTM(n_hidden, activation='elu', dropout=0.2, recurrent_dropout=0.2, return_state=False, return_sequences=True)(
+    decoder, initial_state=[encoder_last_h1, encoder_last_c])
+print(decoder)
+
+
+out = TimeDistributed(Dense(output_train.shape[2]))(decoder)
+print(out)
+
+model = Model(inputs=input_train, outputs=out)
+opt = Adam(lr=0.01, clipnorm=1)
+model.compile(loss='mean_squared_error', optimizer=opt, metrics=['mae'])
+model.summary()
+
+plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+
+```
+
+```{python}
+epc = 100
+es = EarlyStopping(monitor='val_loss', mode='min', patience=50)
+history = model.fit(X_input_train[:, :, :2], X_output_train[:, :, :2], validation_split=0.2, 
+                    epochs=epc, verbose=1, callbacks=[es], 
+                    batch_size=100)
+train_mae = history.history['mae']
+valid_mae = history.history['val_mae']
+ 
+model.save('model_forecasting_seq2seq.h5')
+```
+
+```{python}
+
+plt.plot(train_mae, label='train mae'), 
+plt.plot(valid_mae, label='validation mae')
+plt.ylabel('mae')
+plt.xlabel('epoch')
+plt.title('train vs. validation accuracy (mae)')
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+train_pred_detrend = model.predict(X_input_train[:, :, :2])*x_train_max[:2]
+test_pred_detrend = model.predict(X_input_test[:, :, :2])*x_train_max[:2]
+print(train_pred_detrend.shape, test_pred_detrend.shape)
+train_true_detrend = X_output_train[:, :, :2]*x_train_max[:2]
+test_true_detrend = X_output_test[:, :, :2]*x_train_max[:2]
+print(train_true_detrend.shape, test_true_detrend.shape)
+```
+
+```{python}
+train_pred_detrend = np.concatenate([train_pred_detrend, np.expand_dims(X_output_train[:, :, 2], axis=2)], axis=2)
+test_pred_detrend = np.concatenate([test_pred_detrend, np.expand_dims(X_output_test[:, :, 2], axis=2)], axis=2)
+print(train_pred_detrend.shape, test_pred_detrend.shape)
+train_true_detrend = np.concatenate([train_true_detrend, np.expand_dims(X_output_train[:, :, 2], axis=2)], axis=2)
+test_true_detrend = np.concatenate([test_true_detrend, np.expand_dims(X_output_test[:, :, 2], axis=2)], axis=2)
+print(train_pred_detrend.shape, test_pred_detrend.shape)
+```
+
+```{python}
+
+data_final = dict()
+for dt, lb in zip([train_pred_detrend, train_true_detrend, test_pred_detrend, test_true_detrend], 
+                  ['train_pred', 'train_true', 'test_pred', 'test_true']):
+    dt_x1 = dt[:, :, 0] + (dt[:, :, 2]**2)*x1_trend_param[0] + dt[:, :, 2]*x1_trend_param[1] + x1_trend_param[2]
+    dt_x2 = dt[:, :, 1] + dt[:, :, 2]*x2_trend_param[0] + x2_trend_param[1]
+    data_final[lb] = np.concatenate(
+        [np.expand_dims(dt_x1, axis=2), np.expand_dims(dt_x2, axis=2)], axis=2)
+    print(lb+': {}'.format(data_final[lb].shape))
+```
+
+```{python}
+
+for lb in ['train', 'test']:
+    plt.figure(figsize=(15, 4))
+    plt.hist(data_final[lb+'_pred'].flatten(), bins=100, color='orange', alpha=0.5, label=lb+' pred')
+    plt.hist(data_final[lb+'_true'].flatten(), bins=100, color='green', alpha=0.5, label=lb+' true')
+    plt.legend()
+    plt.title('value distribution: '+lb)
+    plt.show()
+```
+
+```{python}
+
+for lb in ['train', 'test']:
+    MAE_overall = abs(data_final[lb+'_pred'] - data_final[lb+'_true']).mean()
+    MAE_ = abs(data_final[lb+'_pred'] - data_final[lb+'_true']).mean(axis=(1, 2))
+    plt.figure(figsize=(15, 3))
+    plt.plot(MAE_)
+    plt.title('MAE '+lb+': overall MAE = '+str(MAE_overall))
+    plt.show()
+```
+
+```{python}
+ith_timestep = random.choice(range(data_final[lb+'_pred'].shape[1]))
+plt.figure(figsize=(15, 5))
+train_start_t = 0
+test_start_t = data_final['train_pred'].shape[0]
+for lb, tm, clrs in zip(['train', 'test'], [train_start_t, test_start_t], [['green', 'red'], ['blue', 'orange']]):
+    for i, x_lbl in zip([0, 1], ['x1', 'x2']):
+        plt.plot(range(tm, tm+data_final[lb+'_pred'].shape[0]), 
+                 data_final[lb+'_pred'][:, ith_timestep, i], 
+                 linestyle='--', linewidth=1, color=clrs[0], label='pred '+x_lbl)
+        plt.plot(range(tm, tm+data_final[lb+'_pred'].shape[0]), 
+                 data_final[lb+'_true'][:, ith_timestep, i], 
+                 linestyle='-', linewidth=1, color=clrs[1], label='true '+x_lbl)
+    
+plt.title('{}th time step in all samples'.format(ith_timestep))
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=8)
+plt.show()
+```
+
+```{python}
+
+lb = 'test'
+plt.figure(figsize=(15, 5))
+for i, x_lbl, clr in zip([0, 1], ['x1', 'x2'], ['green', 'blue']):
+    plt.plot(data_final[lb+'_pred'][:, ith_timestep, i], linestyle='--', color=clr, label='pred '+x_lbl)
+    plt.plot(data_final[lb+'_true'][:, ith_timestep, i], linestyle='-', color=clr, label='true '+x_lbl)
+plt.title('({}): {}th time step in all samples'.format(lb, ith_timestep))
+plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), fancybox=True, shadow=False, ncol=2)
+plt.show()
+```
+
+```{python}
+
+```
