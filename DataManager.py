@@ -14,6 +14,8 @@ TIMESTAMP_DECIMALS = 2
 TIME_DELTA = 0.01
 BOOTSTRAP_BASEPATH = "./bootstrapped_participant_data/"
 
+REF_APPLIED_ANGLES_360 = False 
+
 class ParticipantData:
     '''
     Class for data of an individual participant.
@@ -363,19 +365,22 @@ class ParticipantData:
                 self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.y"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.z"].reset_index(drop=True)
                     
-                # apply reference data values, rotations, all angles (0,360)  
+                # apply reference data values  
                 self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarRotation.x"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarRotation.y"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarRotation.z"].reset_index(drop=True)
-                self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] % 360 # all angles 0,360 
-                self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] % 360
-                self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] % 360
                 self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarRotation.x"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarRotation.y"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarRotation.z"].reset_index(drop=True)
-                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] % 360 # all angles 0,360 
-                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] % 360
-                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] % 360
+                
+                # Factor angles to 0,360
+                if REF_APPLIED_ANGLES_360:
+                  self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] % 360 
+                  self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] % 360
+                  self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] % 360
+                  self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] % 360 
+                  self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] % 360
+                  self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] % 360
                 
                 # drop local columns 
                 self.golden_segment_data_ref_applied[area][segment].drop(columns = ['EyePosLocalCombined.x','EyePosLocalCombined.y','EyePosLocalCombined.z','EyeDirLocalCombined.x','EyeDirLocalCombined.y','EyeDirLocalCombined.z'],inplace = True)
