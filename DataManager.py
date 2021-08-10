@@ -6,6 +6,7 @@ Authors: Stefan Balle & Lucas Essmann
 import os 
 import glob 
 import numpy as np 
+import pandas as pd
 
 from Helpers import read_normalized_json_to_df, save_to_disk, load_from_disk, create_rolling_windows
 
@@ -390,11 +391,13 @@ class ParticipantData:
         self.verbose = verbosity 
                 
 
-    def get_segment_data(self, use_vanilla=False, filter_data=False, get_first_segment=True, after_event_type_only=[True,False],exclude_areas=[],exclude_segments=[]):
+    def get_segment_data(self, use_vanilla=False, filter_data=False, filter_by_corr_coeff_dict=None, corr_coeff_threshold=0, get_first_segment=True, after_event_type_only=[True,False],exclude_areas=[],exclude_segments=[]):
         '''
         Get either vanilla or reference applied segment data.
         @use_vanilla: Use vanilla segment data for filtering instead of reference applied segment data. 
         @filter_data: Apply filtering or do not.
+        @filter_by_corr_coeff_dict: Dictionary that holds correlation coefficients between reference data runs for each segment; if supplied, filter by corr coeffs and ignore all other parameters.
+        @corr_coeff_threshold: Filter out all segments below threshold value. 
         @get_first_segment: Include the first segment (before first event) in filtered data or not.
         @after_event_type_only: Include only segments that happened after succeeded (True) or failed (False) events. 
         @exclude_areas: Areas to exclude in filtered data.
@@ -413,28 +416,65 @@ class ParticipantData:
             
             # init filtered data 
             filtered_data = {}
-            
-            for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+
+            # filter by correlation coefficients
+            if filter_by_corr_coeff_dict is not None:
+                if self.verbose:
+                    print("ParticipantData: Filtering data by Correlation Coefficients with threshold " + str(corr_coeff_threshold) + ".")
                 
-                # check that area is wished 
-                if area not in exclude_areas:
-                    filtered_data[area] = {}
-                    
+                for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
                     for segment in copy_from_data[area]:
                         
-                        # check that segment is wished 
-                        if segment not in exclude_segments:
+                        # use data, as corr coeffs are bigger than threshold for all measured values in that segment
+                        if ((filter_by_corr_coeff_dict[area][segment] >= corr_coeff_threshold).all().all()):
                             
-                            # check that first segment is wished 
-                            if segment == 0 and get_first_segment:
+                            # make sure keys exist
+                            if not area in filtered_data:
+                                filtered_data[area] = {}
+                            if not segment in filtered_data[area]:
                                 filtered_data[area][segment] = {}
-                                filtered_data[area][segment] = copy_from_data[area][segment].copy(deep=True)
-                            
-                            # check that event before segment has wished condition 
-                            if segment > 0 and self.golden_event_info[area][segment - 1]["succeeded"] in after_event_type_only:
-                                filtered_data[area][segment] = {}
-                                filtered_data[area][segment] = copy_from_data[area][segment].copy(deep=True)
+
+                            # add data 
+                            filtered_data[area][segment] = copy_from_data[area][segment].copy(deep=True)
+
+
+                        # exclude data, corr coeffs smaller than threshold 
+                        else:
+                            if self.verbose:
+                                print("ParticipantData: Corr-coeff filtering excluded " + str(area) + " segment " + str(segment) + " with min corr-coeffs " + str(filter_by_corr_coeff_dict[area][segment].min(axis=1).item()) + ".")
+                            pass
+
+
+             
+
+            # filter by manual specifications
+            else:
+                if self.verbose:
+                    print("ParticipantData: Filtering data with manual settings.")
+               
+
+                for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
                     
+                    # check that area is wished 
+                    if area not in exclude_areas:
+                        filtered_data[area] = {}
+                        
+                        for segment in copy_from_data[area]:
+                            
+                            # check that segment is wished 
+                            if segment not in exclude_segments:
+                                
+                                # check that first segment is wished 
+                                if segment == 0 and get_first_segment:
+                                    filtered_data[area][segment] = {}
+                                    filtered_data[area][segment] = copy_from_data[area][segment].copy(deep=True)
+                                
+                                # check that event before segment has wished condition 
+                                if segment > 0 and self.golden_event_info[area][segment - 1]["succeeded"] in after_event_type_only:
+                                    filtered_data[area][segment] = {}
+                                    filtered_data[area][segment] = copy_from_data[area][segment].copy(deep=True)
+
+
             return filtered_data  
             
         # get unfiltered data
@@ -567,13 +607,14 @@ class MeasurementData:
             self.measurement_data[participant]["data"].apply_reference_data(reference_data)
             
     
-    def get_data(self, use_vanilla=False, filter_data=False, \
+    def get_data(self, use_vanilla=False, filter_data=False, filter_by_corr_coeff_dict=None, corr_coeff_threshold=0, \
                  get_first_segment=True, after_event_type_only=[True,False], \
                  exclude_areas=[], exclude_segments=[], \
                  exclude_participants=[]):
         '''
         Get possibly filtered data from multiple participants. 
-        '''
+        Filtering by correlation coefficients overrides all other settings, except for excluding participants.
+        '''      
         
         data = {}
         
@@ -581,7 +622,7 @@ class MeasurementData:
             
             # check if participant should be skipped 
             if not participant in exclude_participants:
-                data[participant] = self.measurement_data[participant]["data"].get_segment_data(use_vanilla=use_vanilla, filter_data=filter_data, get_first_segment=get_first_segment, after_event_type_only=after_event_type_only,exclude_areas=exclude_areas,exclude_segments=exclude_segments)
+                data[participant] = self.measurement_data[participant]["data"].get_segment_data(use_vanilla=use_vanilla, filter_data=filter_data, filter_by_corr_coeff_dict=filter_by_corr_coeff_dict, corr_coeff_threshold=corr_coeff_threshold, get_first_segment=get_first_segment, after_event_type_only=after_event_type_only,exclude_areas=exclude_areas,exclude_segments=exclude_segments)
         
         return data 
     
