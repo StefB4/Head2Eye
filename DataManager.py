@@ -606,6 +606,7 @@ class MeasurementData:
         print("MeasurementData: Applying reference data to all participants...")
         for participant in self.participant_ids:
             self.measurement_data[participant]["data"].apply_reference_data(reference_data)
+        print("MeasurementData: Done applying reference data to all participants.")
             
     
     def get_data(self, use_vanilla=False, filter_data=False, filter_by_corr_coeff_dict=None, corr_coeff_threshold=0, \
