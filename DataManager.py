@@ -8,7 +8,7 @@ import glob
 import numpy as np 
 import pandas as pd
 
-from Helpers import read_normalized_json_to_df, save_to_disk, load_from_disk, create_rolling_windows
+from Helpers import read_normalized_json_to_df, save_to_disk, load_from_disk, create_rolling_windows, eye_outlier_removal_sigma, eye_outlier_removal_zero_values
 
 RESAMPLE_STRATEGY = "MEAN" # "FILL"
 TIMESTAMP_DECIMALS = 2 
@@ -16,6 +16,8 @@ TIME_DELTA = 0.01
 BOOTSTRAP_BASEPATH = "./bootstrapped_participant_data/"
 
 REF_USE_ROTATION_DIRECTIONS = True 
+REF_APPLIED_REMOVE_OUTLIERS = True 
+OUTLIER_REMOVAL_STRATEGY = "ZEROVALUES" #"SIGMA" 
 
 
 class ParticipantData:
@@ -359,6 +361,42 @@ class ParticipantData:
                 # potentially cut length of data if reference data is shorter; cut off in the front to align data in the back 
                 self.golden_segment_data_ref_applied[area][segment] = self.golden_segment_data_vanilla[area][segment].iloc[-max_len:].copy(deep=True).reset_index(drop=True)
                 
+                # remove temporally correlated outliers
+                # needs to be done before applying reference data, since zero value method relies on datapoints going to zero  
+                if REF_APPLIED_REMOVE_OUTLIERS:
+
+                    if OUTLIER_REMOVAL_STRATEGY == "SIGMA":
+                        self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.x"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.y"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.z"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"], _, _ = \
+                            eye_outlier_removal_sigma(self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.x"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.y"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.z"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"], m=1.5)
+
+                    elif OUTLIER_REMOVAL_STRATEGY == "ZEROVALUES": 
+                        self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.x"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.y"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.z"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"], \
+                        self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"], _, _ = \
+                            eye_outlier_removal_zero_values(self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.x"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.y"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.z"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"], \
+                                                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"], padding=8) # 7 starts to produce good results
+
+                    else:
+                        raise AssertionError("ParticipantData: Specified outlier removal strategy " + str(OUTLIER_REMOVAL_STRATEGY) + " does not exist!")
+
+
                 # apply reference data values, positions 
                 self.golden_segment_data_ref_applied[area][segment]["HmdPosition.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.x"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["HmdPosition.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.y"].reset_index(drop=True)
@@ -367,7 +405,7 @@ class ParticipantData:
                 self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.y"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.z"].reset_index(drop=True)
                     
-                # apply reference data values, rotations
+                # apply reference data values, rotations or directions 
                 if REF_USE_ROTATION_DIRECTIONS:
                     self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.x"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.y"].reset_index(drop=True)
@@ -382,7 +420,8 @@ class ParticipantData:
                     self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.x"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.y"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.z"].reset_index(drop=True)
-                    
+
+                
 
                 # drop local columns 
                 self.golden_segment_data_ref_applied[area][segment].drop(columns = ['EyePosLocalCombined.x','EyePosLocalCombined.y','EyePosLocalCombined.z','EyeDirLocalCombined.x','EyeDirLocalCombined.y','EyeDirLocalCombined.z'],inplace = True)
