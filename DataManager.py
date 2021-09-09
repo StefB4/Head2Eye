@@ -407,12 +407,36 @@ class ParticipantData:
                     
                 # apply reference data values, rotations or directions 
                 if REF_USE_ROTATION_DIRECTIONS:
+                    
+                    # normalize vectors (precautiously) before applying reference (unit length) vectors 
+                    nose_vector_length = np.sqrt(self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] ** 2)
+                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] / nose_vector_length
+                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] / nose_vector_length 
+                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] / nose_vector_length 
+                    eye_dir_vector_length = np.sqrt(self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] ** 2)
+                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] / eye_dir_vector_length
+                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] / eye_dir_vector_length
+                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] / eye_dir_vector_length
+
+                    # apply reference
                     self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.x"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.y"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.z"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.x"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.y"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.z"].reset_index(drop=True)
+                
+                    # normalize vectors after applying reference (unit length) vectors 
+                    nose_vector_length = np.sqrt(self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] ** 2)
+                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] / nose_vector_length
+                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] / nose_vector_length 
+                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] = self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] / nose_vector_length 
+                    eye_dir_vector_length = np.sqrt(self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] ** 2 + self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] ** 2)
+                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] / eye_dir_vector_length
+                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] / eye_dir_vector_length
+                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] / eye_dir_vector_length
+
+                # Apply reference data, but use rotations  
                 else:
                     self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.x"].reset_index(drop=True)
                     self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.y"].reset_index(drop=True)
