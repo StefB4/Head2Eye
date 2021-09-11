@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np 
 import pickle 
 import json 
+from scipy.spatial.transform import Rotation as R
 
 def read_normalized_json_to_df(filepath):
     full_file_df = ""
@@ -231,6 +232,7 @@ def eye_outlier_removal_zero_values(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, pa
     
 
     return pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, info_df, outlier_df
+
 
 
 
