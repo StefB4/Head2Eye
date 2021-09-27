@@ -233,6 +233,3 @@ def eye_outlier_removal_zero_values(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, pa
 
     return pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, info_df, outlier_df
 
-
-
-
