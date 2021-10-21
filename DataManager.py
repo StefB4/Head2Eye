@@ -9,14 +9,14 @@ import numpy as np
 import pandas as pd
 
 from Helpers import read_normalized_json_to_df, save_to_disk, load_from_disk, create_rolling_windows, eye_outlier_removal_sigma, eye_outlier_removal_zero_values
-from AngleHelpers import create_relative_directions
+from AngleHelpers import create_relative_directions, create_relative_directions_consider_roll
 
 RESAMPLE_STRATEGY = "MEAN" # "FILL"
 TIMESTAMP_DECIMALS = 2 
 TIME_DELTA = 0.01
 BOOTSTRAP_BASEPATH = "./bootstrapped_participant_data/"
 
-REF_USE_ROTATION_DIRECTIONS = True 
+REF_APPLY_CONSIDER_ROLL = True
 REF_APPLIED_REMOVE_OUTLIERS = True 
 OUTLIER_REMOVAL_STRATEGY = "ZEROVALUES" #"SIGMA" 
 
@@ -398,49 +398,48 @@ class ParticipantData:
                         raise AssertionError("ParticipantData: Specified outlier removal strategy " + str(OUTLIER_REMOVAL_STRATEGY) + " does not exist!")
 
 
-                # apply reference data values, positions 
+                # Apply reference data values, Positions 
                 self.golden_segment_data_ref_applied[area][segment]["HmdPosition.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.x"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["HmdPosition.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.y"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["HmdPosition.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.z"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.x"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.y"].reset_index(drop=True)
                 self.golden_segment_data_ref_applied[area][segment]["EyePosWorldCombined.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["CarPosition.z"].reset_index(drop=True)
-                    
-                # apply reference data values, rotations or directions 
-                if REF_USE_ROTATION_DIRECTIONS:
-
-                    # Nose Vector 
-                    inp_unity_x = self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"]
-                    inp_unity_y = self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"]
-                    inp_unity_z = self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"]
-                    ref_unity_x = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.x"].reset_index(drop=True)
-                    ref_unity_y = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.y"].reset_index(drop=True)
-                    ref_unity_z = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.z"].reset_index(drop=True)
-                    res_x, res_y, res_z = create_relative_directions(inp_unity_x,inp_unity_y,inp_unity_z,ref_unity_x,ref_unity_y,ref_unity_z,method="anglediff_sphere_coords") # method="unit_sphere_rotation"
-                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] = res_x 
-                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] = res_y 
-                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] = res_z 
-
-                    # Eye Direction 
-                    inp_unity_x = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"]
-                    inp_unity_y = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"]
-                    inp_unity_z = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"]
-                    res_x, res_y, res_z = create_relative_directions(inp_unity_x,inp_unity_y,inp_unity_z,ref_unity_x,ref_unity_y,ref_unity_z,method="anglediff_sphere_coords") # method="unit_sphere_rotation"
-                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] = res_x
-                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] = res_y 
-                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] = res_z 
-                    
-
-                # Apply reference data, but use rotations  
+            
+                # Reference for directional data 
+                if REF_APPLY_CONSIDER_ROLL:
+                    ref_angle_unity_x = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.x"].reset_index(drop=True)
+                    ref_angle_unity_y = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.y"].reset_index(drop=True)
+                    ref_angle_unity_z = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.z"].reset_index(drop=True)
                 else:
-                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.x"].reset_index(drop=True)
-                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.y"].reset_index(drop=True)
-                    self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.z"].reset_index(drop=True)
-                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.x"].reset_index(drop=True)
-                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.y"].reset_index(drop=True)
-                    self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] -= ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_angles.z"].reset_index(drop=True)
+                    ref_dir_unity_x = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.x"].reset_index(drop=True)
+                    ref_dir_unity_y = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.y"].reset_index(drop=True)
+                    ref_dir_unity_z = ref_data_dict[area][segment].iloc[-max_len:]["car_rotation_direction.z"].reset_index(drop=True)
+        
+                # Apply reference data values, Nose Vector 
+                inp_dir_unity_x = self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"]
+                inp_dir_unity_y = self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"]
+                inp_dir_unity_z = self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"]
+                if REF_APPLY_CONSIDER_ROLL:
+                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions_consider_roll(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z) 
+                else:
+                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_dir_unity_x,ref_dir_unity_y,ref_dir_unity_z,method="anglediff_sphere_coords") # method="unit_sphere_rotation"
+                self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] = res_dir_x 
+                self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"] = res_dir_y 
+                self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"] = res_dir_z 
 
-                
+                # Apply reference data values, Eye Direction 
+                inp_dir_unity_x = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"]
+                inp_dir_unity_y = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"]
+                inp_dir_unity_z = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"]
+                if REF_APPLY_CONSIDER_ROLL:
+                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions_consider_roll(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z) 
+                else:
+                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_dir_unity_x,ref_dir_unity_y,ref_dir_unity_z,method="anglediff_sphere_coords") # method="unit_sphere_rotation"
+                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] = res_dir_x
+                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"] = res_dir_y 
+                self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"] = res_dir_z 
+                    
 
                 # drop local columns 
                 #self.golden_segment_data_ref_applied[area][segment].drop(columns = ['EyePosLocalCombined.x','EyePosLocalCombined.y','EyePosLocalCombined.z','EyeDirLocalCombined.x','EyeDirLocalCombined.y','EyeDirLocalCombined.z'],inplace = True)

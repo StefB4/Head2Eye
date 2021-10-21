@@ -8,6 +8,23 @@ import numpy as np
 from tqdm import tqdm
 
 
+def calculate_norm_dir_from_unity_angles(unity_angle_x,unity_angle_y,unity_angle_z):
+    '''
+    As suggested by 
+    https://forum.unity.com/threads/convert-a-vector3-containing-eulerangles-into-a-normalized-direction-vector3.124171/#post-846164
+    
+    Return a Unity unit direction vector.
+
+    '''
+
+    elevation = np.deg2rad(unity_angle_x)
+    heading = np.deg2rad(unity_angle_y)
+    dir_vec = (np.cos(elevation) * np.sin(heading), np.sin(elevation), np.cos(elevation) * np.cos(heading))
+    dir_norm = dir_vec/np.linalg.norm(dir_vec)
+
+    return dir_norm 
+
+
 def calculate_thetas_from_unity_coords(dir_vec,ret_degree=True):
     '''
     Calculates the horizontal and vertical angles of the direction vector. 
@@ -166,6 +183,8 @@ def rad2deg(angle):
 
 def create_relative_direction(inp_dir_unity,ref_dir_unity,method="anglediff_sphere_coords",log_verbose=False):
     '''
+    Mathematically correct, but does not consider roll of reference!
+    
     Calculate a direction vector that has the same offset from the Unity forward vector as an input direction vector has from a reference direction vector.
     inp_dir_unity: Vector of actual direction data.
     ref_dir_unity: Vector of reference the actual data should be taken relative to. 
@@ -438,6 +457,8 @@ def create_relative_direction(inp_dir_unity,ref_dir_unity,method="anglediff_sphe
 
 def create_relative_directions(inp_unity_x,inp_unity_y,inp_unity_z,ref_unity_x,ref_unity_y,ref_unity_z,method="anglediff_sphere_coords"):
     '''
+    Mathematically correct, but does not consider roll of reference!
+    
     Creates for a Pandas Series of Unity x,y,z inputs and references directions that are 
     relative to the Unity forward vector. 
     Methods: 
@@ -449,6 +470,7 @@ def create_relative_directions(inp_unity_x,inp_unity_y,inp_unity_z,ref_unity_x,r
     Return Unity x,y,z series for the relative directions.
     '''
     
+    print("Creating relative directions, method: " + str(method))
     
     # Progress bar 
     tqdm.pandas()
@@ -488,4 +510,200 @@ def create_relative_directions(inp_unity_x,inp_unity_y,inp_unity_z,ref_unity_x,r
     
     return dataframe["final_x"], dataframe["final_y"], dataframe["final_z"]
     
+    
+def create_relative_direction_consider_roll(inp_dir_unity,ref_angles_unity,log_verbose=False):
+    '''
+    Rotate an input vector in the reverse order of angles that were used to create a reference vector from the Unity forward vector. 
+    This will effectively result in (the virtual) reference vector being rotated (by the same rotations) to the Unity forward vector.
+    And the input vector will be relative to the reference vector.
+    The rotations consider yaw, pitch and roll of the reference vector. 
+
+    In detail:
+    Take Unity angles (order of original application is z, x, y) that lead to the creation of the reference direction.
+    Use these angles to create rotation matrices that inverse those rotations. 
+    Apply the same inversion to the input vector.  
+
+    The resulting relative direction vector will be in Unity coordinates. 
+    '''
+
+    # Init 
+    ref_dir_unity = None
+    ref_angles_unity = np.array(ref_angles_unity)
+    inp_dir_cartesian = unity_pts_to_right_handed_cartesian_coords([inp_dir_unity])[0]
+
+    # Log verbose information         
+    if log_verbose:
+
+        # Calculate ref dir from ref angles 
+        ref_dir_unity = calculate_norm_dir_from_unity_angles(ref_angles_unity[0],ref_angles_unity[1],ref_angles_unity[2])
+
+        # To cartesian from Unity 
+        ref_dir_cartesian = unity_pts_to_right_handed_cartesian_coords([ref_dir_unity])[0]
+
+        # Calculate horizontal angle offset as angle between direction vector's projection on x,y plane (cartesian) and forward vector
+        # Alternatively, use calculate_thetas_from_unity_coords (but can only use horizontal value here, because projection would skew vertical value)
+        ref_horizontal = angle_between([ref_dir_cartesian[0],ref_dir_cartesian[1],0],[0,1,0])
+
+        # Calculate vertical angle offset as angle between direction vector and projection on x,y plane (cartesian)
+        ref_vertical = angle_between(ref_dir_cartesian,[ref_dir_cartesian[0],ref_dir_cartesian[1],0])
+
+        # if z (cartesian) is negative, vertical angle is negative 
+        if ref_dir_cartesian[2] < 0:
+            ref_vertical *= -1
+            
+        # if x (cartesian) is negative, horizontal angle is negative 
+        if ref_dir_cartesian[0] < 0:
+            ref_horizontal *= -1
+            
+        # Calculate horizontal angle offset for input 
+        inp_horizontal = angle_between([inp_dir_cartesian[0],inp_dir_cartesian[1],0],[0,1,0])
+
+        # Calculate vertical angle offset for input
+        inp_vertical = angle_between(inp_dir_cartesian,[inp_dir_cartesian[0],inp_dir_cartesian[1],0])
+
+        # if z (cartesian) is negative, vertical angle is negative 
+        if inp_dir_cartesian[2] < 0:
+            inp_vertical *= -1
+            
+        # if x (cartesian) is negative, horizontal angle is negative 
+        if inp_dir_cartesian[0] < 0:
+            inp_horizontal *= -1
+
+        # Log 
+        print("Reference horizontal: " + str(ref_horizontal))
+        print("Reference vertical: " + str(ref_vertical))
+        print("Input horizontal: " + str(inp_horizontal))
+        print("Input vertical: " + str(inp_vertical))
+
+
+    # Calculate rot matrices, Axis are for right-handed coordinate system
+    # Unity original order of applied angles: z, x, y 
+    # Inverse Unity order: y, x, z 
+    # Inverse Unity order in cartesian: z, x, y 
+    
+    horizontal_angle = ref_angles_unity[1] # unity y
+    vertical_angle = ref_angles_unity[0] # unity x
+    around_itself_angle = ref_angles_unity[2] # unity z
+    horizontal_rot_mat = calculate_rotation_matrix(rotate_around_axis="z", angle = + horizontal_angle, angle_in_degree=True)
+    vertical_rot_mat = calculate_rotation_matrix(rotate_around_axis="x", angle = - vertical_angle, angle_in_degree=True)
+    around_itself_rot_mat = calculate_rotation_matrix(rotate_around_axis="y", angle = - around_itself_angle, angle_in_degree=True)
+    
+    # log verbose information
+    if log_verbose:
+
+        # Apply calculated rotations to reference direction, in order to rotate it to forward direction (Unity 0,0,1)
+        # Keep order of rotations!
+        rotated_ref = ref_dir_cartesian.copy()
+        rotated_ref = np.dot(horizontal_rot_mat,rotated_ref)
+        rotated_ref = np.dot(vertical_rot_mat, rotated_ref)
+        rotated_ref = np.dot(around_itself_rot_mat, rotated_ref)
+
+        # Calculate horizontal angle offset of rotated reference
+        rotated_ref_horizontal = angle_between([rotated_ref[0],rotated_ref[1],0],[0,1,0])
+
+        # Calculate vertical angle offset of rotated reference
+        rotated_ref_vertical = angle_between(rotated_ref,[rotated_ref[0],rotated_ref[1],0])
+
+        # if z (cartesian) is negative, vertical angle is negative 
+        if rotated_ref[2] < 0:
+            rotated_ref_vertical *= -1
+            
+        # if x (cartesian) is negative, horizontal angle is negative 
+        if ref_dir_cartesian[0] < 0:
+            rotated_ref_horizontal *= -1
+
+        print("Rotated reference: " + str(rotated_ref))
+        print("Rotated reference horizontal: " + str(rotated_ref_horizontal))
+        print("Rotated reference vertical: " + str(rotated_ref_vertical))
+
+
+
+    # Apply calculated rotations to input direction
+    # Keep order of rotation!
+    rotated_inp = inp_dir_cartesian.copy()
+    rotated_inp = np.dot(horizontal_rot_mat,rotated_inp)
+    rotated_inp = np.dot(vertical_rot_mat, rotated_inp)
+    rotated_inp = np.dot(around_itself_rot_mat, rotated_inp)
+
+    # log verbose information
+    if log_verbose:
+
+        # Calculate horizontal angle offset of rotated input
+        rotated_inp_horizontal = angle_between([rotated_inp[0],rotated_inp[1],0],[0,1,0])
+
+        # Calculate vertical angle offset of rotated input
+        rotated_inp_vertical = angle_between(rotated_inp,[rotated_inp[0],rotated_inp[1],0])
+
+        # if z (cartesian) is negative, vertical angle is negative 
+        if rotated_inp[2] < 0:
+            rotated_inp_vertical *= -1
+            
+        # if x (cartesian) is negative, horizontal angle is negative 
+        if rotated_inp[0] < 0:
+            rotated_inp_horizontal *= -1
+
+        print("Rotated input: " + str(rotated_inp))
+        print("Rotated input horizontal: " + str(rotated_inp_horizontal))
+        print("Rotated input vertical: " + str(rotated_inp_vertical))
+
+
+    # Make result a unit vector 
+    final_dir_cartesian = rotated_inp / np.linalg.norm(rotated_inp)
+    
+    # Transform result to Unity coordinates 
+    final_dir_unity = right_handed_cartesian_coords_to_unity_pts([final_dir_cartesian])[0]
+
+    return final_dir_unity
+
+
+def create_relative_directions_consider_roll(inp_unity_x,inp_unity_y,inp_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z):
+    '''
+    
+    Creates for a Pandas Series of Unity x,y,z input directions and Unity reference angles x,y,z
+    a Pandas Series of Unity x,y,z directions that are relative to (the virtual) reference vector 
+    (as would be constructed by rotation from the Unity forward vector with the provided angles). 
+
+    See create_relative_direction_consider_roll() for more infos. 
+    
+    Return Unity x,y,z series for the relative directions.
+    '''
+    
+    print("Creating relative directions considering roll.")
+    
+    # Progress bar 
+    tqdm.pandas()
+    
+    # Create dataframe 
+    dataframe = pd.DataFrame(columns=["inp_x","inp_y","inp_z","ref_angle_x","ref_angle_y","ref_angle_z","final_x","final_y","final_z"])
+
+    # Set data
+    dataframe["inp_x"] = inp_unity_x
+    dataframe["inp_y"] = inp_unity_y
+    dataframe["inp_z"] = inp_unity_z
+    dataframe["ref_angle_x"] = ref_angle_unity_x
+    dataframe["ref_angle_y"] = ref_angle_unity_y
+    dataframe["ref_angle_z"] = ref_angle_unity_z
+    
+    # Init final columns
+    dataframe["final_x"] = np.NAN
+    dataframe["final_y"] = np.NAN
+    dataframe["final_z"] = np.NAN
+
+    # Define method that is to be applied per row 
+    def apply_dir_calc(arg):
+
+        # Calculate relative direction 
+        result = create_relative_direction_consider_roll((arg["inp_x"],arg["inp_y"],arg["inp_z"]),(arg["ref_angle_x"],arg["ref_angle_y"],arg["ref_angle_z"]),log_verbose=False)
+
+        # Add result to row of dataframe
+        arg["final_x"] = result[0]
+        arg["final_y"] = result[1]
+        arg["final_z"] = result[2]
+        
+        return arg
+
+    # Apply transform 
+    dataframe = dataframe.progress_apply(lambda row: apply_dir_calc(row), axis=1)
+    
+    return dataframe["final_x"], dataframe["final_y"], dataframe["final_z"]
     
