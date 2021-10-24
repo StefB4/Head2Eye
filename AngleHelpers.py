@@ -12,12 +12,13 @@ def calculate_norm_dir_from_unity_angles(unity_angle_x,unity_angle_y,unity_angle
     '''
     As suggested by 
     https://forum.unity.com/threads/convert-a-vector3-containing-eulerangles-into-a-normalized-direction-vector3.124171/#post-846164
-    
-    Return a Unity unit direction vector.
+    Inversion of the x angle added for the calculation of the elevation in order to produce correct results that
+    match the results of Unity's built-in method.
 
+    Return a Unity unit direction vector.
     '''
 
-    elevation = np.deg2rad(unity_angle_x)
+    elevation = np.deg2rad( (-1) * unity_angle_x) # (-1) multiplication added here in comparison to original code
     heading = np.deg2rad(unity_angle_y)
     dir_vec = (np.cos(elevation) * np.sin(heading), np.sin(elevation), np.cos(elevation) * np.cos(heading))
     dir_norm = dir_vec/np.linalg.norm(dir_vec)
@@ -449,6 +450,9 @@ def create_relative_direction(inp_dir_unity,ref_dir_unity,method="anglediff_sphe
     # Transform result to Unity coordinates 
     final_dir_unity = right_handed_cartesian_coords_to_unity_pts([final_dir_cartesian])[0]
    
+    # log verbose information
+    if log_verbose:
+        print("Final direction vector: " + str(final_dir_unity))
 
     return final_dir_unity
 
@@ -584,9 +588,9 @@ def create_relative_direction_consider_roll(inp_dir_unity,ref_angles_unity,log_v
     horizontal_angle = ref_angles_unity[1] # unity y
     vertical_angle = ref_angles_unity[0] # unity x
     around_itself_angle = ref_angles_unity[2] # unity z
-    horizontal_rot_mat = calculate_rotation_matrix(rotate_around_axis="z", angle = + horizontal_angle, angle_in_degree=True)
-    vertical_rot_mat = calculate_rotation_matrix(rotate_around_axis="x", angle = - vertical_angle, angle_in_degree=True)
-    around_itself_rot_mat = calculate_rotation_matrix(rotate_around_axis="y", angle = - around_itself_angle, angle_in_degree=True)
+    horizontal_rot_mat = calculate_rotation_matrix(rotate_around_axis="z", angle = horizontal_angle, angle_in_degree=True)
+    vertical_rot_mat = calculate_rotation_matrix(rotate_around_axis="x", angle = vertical_angle, angle_in_degree=True)
+    around_itself_rot_mat = calculate_rotation_matrix(rotate_around_axis="y", angle = around_itself_angle, angle_in_degree=True)
     
     # log verbose information
     if log_verbose:
@@ -652,6 +656,10 @@ def create_relative_direction_consider_roll(inp_dir_unity,ref_angles_unity,log_v
     
     # Transform result to Unity coordinates 
     final_dir_unity = right_handed_cartesian_coords_to_unity_pts([final_dir_cartesian])[0]
+
+    # log verbose information
+    if log_verbose:
+        print("Final direction vector: " + str(final_dir_unity))
 
     return final_dir_unity
 
