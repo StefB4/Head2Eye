@@ -106,6 +106,7 @@ def eye_outlier_removal_sigma(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, m=1.5):
             dir_x[min_c:max_c+1] = dir_x[min_c-1]
             dir_y[min_c:max_c+1] = dir_y[min_c-1] 
             dir_z[min_c:max_c+1] = dir_z[min_c-1] 
+            
         # all other cases
         elif (max_c-min_c)<=21:
             pos_x[min_c:max_c+1] = (pos_x[min_c-1] + pos_x[max_c+1])/2
