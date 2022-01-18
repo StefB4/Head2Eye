@@ -1,0 +1,24 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.8.8",
+    "heartbeatAt": "2022-01-18T23:02:11.167834",
+    "startedAt": "2022-01-18T23:02:05.302272",
+    "docker": null,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [
+        "-f",
+        "/Users/stefan/Library/Jupyter/runtime/kernel-4b91a1f1-011f-4a00-9c66-58c1bb872af8.json"
+    ],
+    "state": "running",
+    "program": "Seq2Seq-Transformer-TimeSeries.ipynb",
+    "root": "/Users/stefan/Documents/Studium/CogSci in Osnabru\u0308ck/Mehr/HiWi-Ta\u0308tigkeiten/NBP/Content/Head2EyeMovement/Head2Eye",
+    "git": {
+        "remote": "https://github.com/StefB4/Head2Eye.git",
+        "commit": "9fba6adef8170f27a4a066cfab747dc596d71693"
+    },
+    "email": "stefan.kaki@web.de",
+    "host": "MBP-von-Stefan.fritz.box",
+    "username": "stefan",
+    "executable": "/Users/stefan/opt/anaconda3/envs/Body2Eye/bin/python"
+}

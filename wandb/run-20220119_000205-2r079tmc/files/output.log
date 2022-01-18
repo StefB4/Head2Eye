@@ -1,0 +1,357 @@
+Shape surrogate pairs: (800, 2, 201)
+Shape surrogate quadrupels: (800, 4, 201)
+800 total pairs
+560 training pairs
+120 validation pairs
+120 test pairs
+(560, 201)
+(560, 201)
+(120, 201)
+(120, 201)
+inputs["encoder_inputs"].shape: (64, 200)
+inputs["decoder_inputs"].shape: (64, 200)
+targets.shape: (64, 200)
+Encoder Shape
+Tensor("transformer_encoder/layer_normalization_1/add:0", shape=(None, None, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder/layer_normalization_4/add:0", shape=(None, None, 1), dtype=float32)
+Decoder Shape
+Tensor("model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, None, 1), dtype=float32)
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding (Positiona (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder (Transforme (None, None, 1)      6206        positional_embedding[0][0]
+__________________________________________________________________________________________________
+model_1 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/2
+Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 0.5463 - accuracy: 0.0016Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+9/9 [==============================] - 17s 2s/step - loss: 0.5467 - accuracy: 0.0018 - val_loss: 0.5294 - val_accuracy: 0.0000e+00
+Epoch 2/2
+
+
+
+
+
+9/9 [==============================] - 12s 1s/step - loss: 0.5341 - accuracy: 0.0038 - val_loss: 0.5169 - val_accuracy: 0.0000e+00
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding (Positiona (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder (Transforme (None, None, 1)      6206        positional_embedding[0][0]
+__________________________________________________________________________________________________
+model_1 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/2
+Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 0.5215 - accuracy: 0.0064Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+9/9 [==============================] - 17s 2s/step - loss: 0.5218 - accuracy: 0.0067 - val_loss: 0.5046 - val_accuracy: 0.0000e+00
+Epoch 2/2
+
+
+
+
+
+9/9 [==============================] - 12s 1s/step - loss: 0.5101 - accuracy: 0.0021 - val_loss: 0.4925 - val_accuracy: 0.0000e+00
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding (Positiona (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder (Transforme (None, None, 1)      6206        positional_embedding[0][0]
+__________________________________________________________________________________________________
+model_1 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding (Positiona (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder (Transforme (None, None, 1)      6206        positional_embedding[0][0]
+__________________________________________________________________________________________________
+model_1 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding (Positiona (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder (Transforme (None, None, 1)      6206        positional_embedding[0][0]
+__________________________________________________________________________________________________
+model_1 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding (Positiona (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder (Transforme (None, None, 1)      6206        positional_embedding[0][0]
+__________________________________________________________________________________________________
+model_1 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/2
+Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 0.4982 - accuracy: 0.0016Encoder Shape
+Tensor("transformer/transformer_encoder/layer_normalization_1/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_1/transformer_decoder/layer_normalization_4/add:0", shape=(None, 200, 1), dtype=float32)
+[34m[1mwandb[39m[22m: [32m[41mERROR[39m[49m Can't save model, h5py returned error: Layer PositionalEmbedding has arguments in `__init__` and therefore must override `get_config`.
+9/9 [==============================] - 16s 2s/step - loss: 0.4986 - accuracy: 0.0018 - val_loss: 0.4805 - val_accuracy: 0.0000e+00
+Epoch 2/2
+
+
+
+
+
+
+9/9 [==============================] - 12s 1s/step - loss: 0.4870 - accuracy: 0.0021 - val_loss: 0.4686 - val_accuracy: 0.0000e+00
+Encoder Shape
+Tensor("transformer_encoder_1/layer_normalization_6/add:0", shape=(None, None, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder_1/layer_normalization_9/add:0", shape=(None, None, 1), dtype=float32)
+Decoder Shape
+Tensor("model_3/transformer_decoder_1/layer_normalization_9/add:0", shape=(None, None, 1), dtype=float32)
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding_2 (Positio (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder_1 (Transfor (None, None, 1)      6206        positional_embedding_2[0][0]
+__________________________________________________________________________________________________
+model_3 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder_1[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/2
+Encoder Shape
+Tensor("transformer/transformer_encoder_1/layer_normalization_6/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_3/transformer_decoder_1/layer_normalization_9/add:0", shape=(None, 200, 1), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_1/layer_normalization_6/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_3/transformer_decoder_1/layer_normalization_9/add:0", shape=(None, 200, 1), dtype=float32)
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 0.5464 - accuracy: 9.5279e-04Encoder Shape
+Tensor("transformer/transformer_encoder_1/layer_normalization_6/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_3/transformer_decoder_1/layer_normalization_9/add:0", shape=(None, 200, 1), dtype=float32)
+9/9 [==============================] - 16s 1s/step - loss: 0.5467 - accuracy: 0.0010 - val_loss: 0.5294 - val_accuracy: 0.0000e+00
+Epoch 2/2
+
+
+
+
+
+9/9 [==============================] - 12s 1s/step - loss: 0.5341 - accuracy: 0.0049 - val_loss: 0.5169 - val_accuracy: 0.0000e+00
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+positional_embedding_2 (Positio (None, None, 1)      200         encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, None)]       0
+__________________________________________________________________________________________________
+transformer_encoder_1 (Transfor (None, None, 1)      6206        positional_embedding_2[0][0]
+__________________________________________________________________________________________________
+model_3 (Functional)            (None, None)         6465        decoder_inputs[0][0]
+                                                                 transformer_encoder_1[0][0]
+==================================================================================================
+Total params: 12,871
+Trainable params: 12,871
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/10
+Encoder Shape
+Tensor("transformer/transformer_encoder_1/layer_normalization_6/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_3/transformer_decoder_1/layer_normalization_9/add:0", shape=(None, 200, 1), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_1/layer_normalization_6/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_3/transformer_decoder_1/layer_normalization_9/add:0", shape=(None, 200, 1), dtype=float32)
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 0.5215 - accuracy: 6.6344e-04Encoder Shape
+Tensor("transformer/transformer_encoder_1/layer_normalization_6/add:0", shape=(None, 200, 1), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_3/transformer_decoder_1/layer_normalization_9/add:0", shape=(None, 200, 1), dtype=float32)
+9/9 [==============================] - 15s 1s/step - loss: 0.5219 - accuracy: 7.7567e-04 - val_loss: 0.5046 - val_accuracy: 0.0000e+00
+Epoch 2/10
+
+
+
+
+9/9 [==============================] - 11s 1s/step - loss: 0.5101 - accuracy: 0.0010 - val_loss: 0.4925 - val_accuracy: 0.0000e+00
+Epoch 3/10
+
+
+
+
+9/9 [==============================] - 13s 1s/step - loss: 0.4985 - accuracy: 0.0000e+00 - val_loss: 0.4806 - val_accuracy: 0.0000e+00
+Epoch 4/10
+
+
+
+
+9/9 [==============================] - 12s 1s/step - loss: 0.4870 - accuracy: 0.0000e+00 - val_loss: 0.4690 - val_accuracy: 0.0000e+00
+Epoch 5/10
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 0.4760 - accuracy: 0.0032
+9/9 [==============================] - 12s 1s/step - loss: 0.4764 - accuracy: 0.0030 - val_loss: 0.4577 - val_accuracy: 0.0000e+00
+Epoch 6/10
+
+
+
+
+
+9/9 [==============================] - 14s 2s/step - loss: 0.4662 - accuracy: 0.0018 - val_loss: 0.4467 - val_accuracy: 0.0000e+00
+Epoch 7/10
+
+
+
+
+
+9/9 [==============================] - 13s 1s/step - loss: 0.4562 - accuracy: 7.7567e-04 - val_loss: 0.4360 - val_accuracy: 0.0000e+00
+Epoch 8/10
+
+
+
+
+
+9/9 [==============================] - 14s 2s/step - loss: 0.4474 - accuracy: 0.0010 - val_loss: 0.4256 - val_accuracy: 0.0000e+00
+Epoch 9/10
+
+
+
+
+9/9 [==============================] - 12s 1s/step - loss: 0.4382 - accuracy: 0.0049 - val_loss: 0.4156 - val_accuracy: 0.0000e+00
+Epoch 10/10
+
+
+
+
+
+9/9 [==============================] - 11s 1s/step - loss: 0.4291 - accuracy: 0.0030 - val_loss: 0.4058 - val_accuracy: 0.0000e+00
