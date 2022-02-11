@@ -1,0 +1,24 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.8.8",
+    "heartbeatAt": "2022-02-11T18:55:17.504385",
+    "startedAt": "2022-02-11T18:55:13.568137",
+    "docker": null,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [
+        "-f",
+        "/Users/stefan/Library/Jupyter/runtime/kernel-bec554b2-aeeb-42b7-b442-7e109b5f7288.json"
+    ],
+    "state": "running",
+    "program": "Seq2Seq-SmallDim.ipynb",
+    "root": "/Users/stefan/Documents/Studium/CogSci in Osnabru\u0308ck/Mehr/HiWi-Ta\u0308tigkeiten/NBP/Content/Head2EyeMovement/Head2Eye",
+    "git": {
+        "remote": "https://github.com/StefB4/Head2Eye.git",
+        "commit": "becac4f6f0282a9b61cbfdfee6399c4fd35f3ea7"
+    },
+    "email": "stefan.kaki@web.de",
+    "host": "83ad0631.funky.uni-osnabrueck.de",
+    "username": "stefan",
+    "executable": "/Users/stefan/opt/anaconda3/envs/Body2Eye/bin/python"
+}
