@@ -1400,3 +1400,12 @@ Tensor("model_106/transformer_decoder_90/ones:0", shape=(None, 200, 1), dtype=fl
 Tensor("model_106/positional_embedding_189/add:0", shape=(None, 200, 1), dtype=float32)
 Tensor("model_106/transformer_decoder_90/multi_head_attention_279/attention_output/add:0", shape=(None, 200, 1), dtype=float32)
 Decoder Shape
+Tensor("model_106/transformer_decoder_90/layer_normalization_470/add:0", shape=(None, 200, 1), dtype=float32)
+Tensor("Placeholder:0", shape=(None, 200), dtype=float32)
+Tensor("positional_embedding_193/truediv:0", shape=(None,), dtype=float64)
+Tensor("Cast:0", shape=(None, 200), dtype=float32)
+Tensor("positional_embedding_194/truediv:0", shape=(None,), dtype=float64)
+Tensor("positional_embedding_195/Cast:0", shape=(None, 200), dtype=float64)
+Tensor("positional_embedding_195/truediv:0", shape=(None,), dtype=float64)
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 1), dtype=tf.float32, name=None), name='dropout_15/Identity:0', description="created by layer 'dropout_15'")
+[34m[1mwandb[39m[22m: Network error resolved after 0:00:08.771964, resuming normal operation.

@@ -601,3 +601,91 @@ config: {}
 2022-02-11 22:00:30,656 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
 2022-02-11 22:00:30,656 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
 2022-02-11 22:00:30,656 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:01:35,633 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:01:35,638 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:01:35,638 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:01:36,131 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:01:36,203 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:01:36,203 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:03:46,775 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:03:46,784 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:03:46,784 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:03:47,215 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:03:47,242 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:03:47,242 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:04:08,771 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:04:08,774 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:04:08,775 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:04:12,848 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:04:12,875 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:04:12,875 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:05:07,928 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:05:07,937 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:05:07,937 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:05:08,320 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:05:08,390 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:05:08,391 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:06:39,337 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:06:39,341 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:06:39,341 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:06:39,733 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:06:39,762 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:06:39,762 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:08:05,034 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:08:05,037 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:08:05,038 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-11 23:08:05,363 INFO    MainThread:3234 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-11 23:08:05,588 INFO    MainThread:3234 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-11 23:08:05,588 INFO    MainThread:3234 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-17 15:19:46,932 INFO    MainThread:3234 [wandb_run.py:_atexit_cleanup():1780] got exitcode: 0
+2022-02-17 15:19:47,109 INFO    MainThread:3234 [wandb_run.py:_restore():1752] restore
+2022-02-17 15:19:48,216 INFO    MainThread:3234 [wandb_run.py:_wait_for_finish():1912] got exit ret: file_counts {
+  wandb_count: 1
+  media_count: 5
+  other_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 6303
+  total_bytes: 6303
+}
+
+2022-02-17 15:19:48,752 INFO    MainThread:3234 [wandb_run.py:_wait_for_finish():1912] got exit ret: file_counts {
+  wandb_count: 1
+  media_count: 5
+  other_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 6303
+  total_bytes: 6303
+}
+
+2022-02-17 15:19:49,020 INFO    MainThread:3234 [wandb_run.py:_wait_for_finish():1912] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 5
+  other_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 6303
+  total_bytes: 111058
+}
+
+2022-02-17 15:19:49,124 INFO    MainThread:3234 [wandb_run.py:_wait_for_finish():1912] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 5
+  other_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 6303
+  total_bytes: 111058
+}
+
+2022-02-17 15:19:49,244 INFO    MainThread:3234 [wandb_run.py:_wait_for_finish():1912] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 5
+  other_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 6303
+  total_bytes: 111058
+}
+
