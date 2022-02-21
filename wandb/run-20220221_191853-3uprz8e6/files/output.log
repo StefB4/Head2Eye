@@ -1,0 +1,1380 @@
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_78/sequential_107/reshape_42/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_78/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder Inputs:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='encoder_inputs'), name='encoder_inputs', description="created by layer 'encoder_inputs'")
+x_encoder:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_78/add_1:0', description="created by layer 'positional_embedding_78'")
+Encoder reshaped inputs
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer_encoder_38/layer_normalization_157/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer_encoder_38/sequential_108/dense_184/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer_encoder_38/layer_normalization_158/add:0", shape=(None, 200, 4), dtype=float32)
+encoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='transformer_encoder_38/layer_normalization_158/add_1:0', description="created by layer 'transformer_encoder_38'")
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_79/sequential_109/reshape_43/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_79/add:0", shape=(None, 200, 4), dtype=float32)
+decoder_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='decoder_inputs'), name='decoder_inputs', description="created by layer 'decoder_inputs'")
+encoded_seq_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name='decoder_state_inputs'), name='decoder_state_inputs', description="created by layer 'decoder_state_inputs'")
+x_decoder
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_79/add_1:0', description="created by layer 'positional_embedding_79'")
+Decoder Inputs:
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer_decoder_27/multi_head_attention_93/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer_decoder_27/layer_normalization_159/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder_27/layer_normalization_161/add:0", shape=(None, 200, 4), dtype=float32)
+Flatten decoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name=None), name='dense_188/BiasAdd:0', description="created by layer 'dense_188'")
+Positional Embedding dense projection of inputs:
+Tensor("model_54/positional_embedding_79/sequential_109/reshape_43/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("model_54/positional_embedding_79/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("model_54/positional_embedding_79/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("model_54/transformer_decoder_27/multi_head_attention_93/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("model_54/transformer_decoder_27/layer_normalization_159/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("model_54/transformer_decoder_27/layer_normalization_161/add:0", shape=(None, 200, 4), dtype=float32)
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+positional_embedding_78 (Positi (None, 200, 4)       160800      encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+transformer_encoder_38 (Transfo (None, 200, 4)       329752      positional_embedding_78[0][0]
+__________________________________________________________________________________________________
+model_54 (Functional)           (None, 200)          340684      decoder_inputs[0][0]
+                                                                 transformer_encoder_38[0][0]
+==================================================================================================
+Total params: 831,236
+Trainable params: 831,236
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/4
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_78/sequential_107/reshape_42/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_78/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_78/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_38/layer_normalization_157/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_38/sequential_108/dense_184/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_38/layer_normalization_158/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_54/positional_embedding_79/sequential_109/reshape_43/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_54/positional_embedding_79/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_54/positional_embedding_79/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_54/transformer_decoder_27/multi_head_attention_93/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_54/transformer_decoder_27/layer_normalization_159/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_38/layer_normalization_158/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_54/transformer_decoder_27/layer_normalization_161/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_78/sequential_107/reshape_42/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_78/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_78/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_38/layer_normalization_157/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_38/sequential_108/dense_184/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_38/layer_normalization_158/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_54/positional_embedding_79/sequential_109/reshape_43/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_54/positional_embedding_79/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_54/positional_embedding_79/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_54/transformer_decoder_27/multi_head_attention_93/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_54/transformer_decoder_27/layer_normalization_159/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_38/layer_normalization_158/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_54/transformer_decoder_27/layer_normalization_161/add:0", shape=(None, 200, 4), dtype=float32)
+
+2/9 [=====>........................] - ETA: 1:32 - loss: 3.3821 - mean_squared_error: 3.3821 - mean_absolute_error: 1.4497 - mean_absolute_percentage_error: 220.7066 - cosine_proximity: 0.0521 Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_80/sequential_111/reshape_44/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_80/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder Inputs:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='encoder_inputs'), name='encoder_inputs', description="created by layer 'encoder_inputs'")
+x_encoder:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_80/add_1:0', description="created by layer 'positional_embedding_80'")
+Encoder reshaped inputs
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer_encoder_39/layer_normalization_162/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer_encoder_39/sequential_112/dense_191/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer_encoder_39/layer_normalization_163/add:0", shape=(None, 200, 4), dtype=float32)
+encoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='transformer_encoder_39/layer_normalization_163/add_1:0', description="created by layer 'transformer_encoder_39'")
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_81/sequential_113/reshape_45/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_81/add:0", shape=(None, 200, 4), dtype=float32)
+decoder_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='decoder_inputs'), name='decoder_inputs', description="created by layer 'decoder_inputs'")
+encoded_seq_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name='decoder_state_inputs'), name='decoder_state_inputs', description="created by layer 'decoder_state_inputs'")
+x_decoder
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_81/add_1:0', description="created by layer 'positional_embedding_81'")
+Decoder Inputs:
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer_decoder_28/multi_head_attention_96/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer_decoder_28/layer_normalization_164/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder_28/layer_normalization_166/add:0", shape=(None, 200, 4), dtype=float32)
+Flatten decoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name=None), name='dense_195/BiasAdd:0', description="created by layer 'dense_195'")
+Positional Embedding dense projection of inputs:
+Tensor("model_56/positional_embedding_81/sequential_113/reshape_45/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("model_56/positional_embedding_81/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("model_56/positional_embedding_81/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("model_56/transformer_decoder_28/multi_head_attention_96/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("model_56/transformer_decoder_28/layer_normalization_164/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("model_56/transformer_decoder_28/layer_normalization_166/add:0", shape=(None, 200, 4), dtype=float32)
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+positional_embedding_80 (Positi (None, 200, 4)       160800      encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+transformer_encoder_39 (Transfo (None, 200, 4)       329752      positional_embedding_80[0][0]
+__________________________________________________________________________________________________
+model_56 (Functional)           (None, 200)          340684      decoder_inputs[0][0]
+                                                                 transformer_encoder_39[0][0]
+==================================================================================================
+Total params: 831,236
+Trainable params: 831,236
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/4
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_80/sequential_111/reshape_44/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_80/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_80/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_39/layer_normalization_162/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_39/sequential_112/dense_191/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_39/layer_normalization_163/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_56/positional_embedding_81/sequential_113/reshape_45/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_56/positional_embedding_81/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_56/positional_embedding_81/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_56/transformer_decoder_28/multi_head_attention_96/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_56/transformer_decoder_28/layer_normalization_164/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_39/layer_normalization_163/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_56/transformer_decoder_28/layer_normalization_166/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_80/sequential_111/reshape_44/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_80/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_80/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_39/layer_normalization_162/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_39/sequential_112/dense_191/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_39/layer_normalization_163/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_56/positional_embedding_81/sequential_113/reshape_45/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_56/positional_embedding_81/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_56/positional_embedding_81/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_56/transformer_decoder_28/multi_head_attention_96/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_56/transformer_decoder_28/layer_normalization_164/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_39/layer_normalization_163/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_56/transformer_decoder_28/layer_normalization_166/add:0", shape=(None, 200, 4), dtype=float32)
+
+2/9 [=====>........................] - ETA: 1:04 - loss: 1.9879 - mean_squared_error: 1.9879 - mean_absolute_error: 1.1194 - mean_absolute_percentage_error: 166.6337 - cosine_proximity: 0.0948
+Exception in thread NetStatThr:
+Traceback (most recent call last):
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 152, in check_network_status
+    status_response = self._interface.communicate_network_status()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface.py", line 125, in communicate_network_status
+    resp = self._communicate_network_status(status)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 388, in _communicate_network_status
+    resp = self._communicate(req, local=True)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 213, in _communicate
+    return self._communicate_async(rec, local=local).get(timeout=timeout)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 218, in _communicate_async
+    raise Exception("The wandb backend process has shutdown")
+Exception: The wandb backend process has shutdown
+Exception in thread ChkStopThr:
+Traceback (most recent call last):
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 170, in check_status
+    status_response = self._interface.communicate_stop_status()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface.py", line 114, in communicate_stop_status
+    resp = self._communicate_stop_status(status)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 378, in _communicate_stop_status
+    resp = self._communicate(req, local=True)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 213, in _communicate
+    return self._communicate_async(rec, local=local).get(timeout=timeout)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 218, in _communicate_async
+    raise Exception("The wandb backend process has shutdown")
+2/9 [=====>........................] - ETA: 1:04 - loss: 1.9879 - mean_squared_error: 1.9879 - mean_absolute_error: 1.1194 - mean_absolute_percentage_error: 166.6337 - cosine_proximity: 0.0948 Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_82/sequential_115/reshape_46/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_82/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder Inputs:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='encoder_inputs'), name='encoder_inputs', description="created by layer 'encoder_inputs'")
+x_encoder:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_82/add_1:0', description="created by layer 'positional_embedding_82'")
+Encoder reshaped inputs
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer_encoder_40/layer_normalization_167/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer_encoder_40/sequential_116/dense_198/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer_encoder_40/layer_normalization_168/add:0", shape=(None, 200, 4), dtype=float32)
+encoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='transformer_encoder_40/layer_normalization_168/add_1:0', description="created by layer 'transformer_encoder_40'")
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_83/sequential_117/reshape_47/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_83/add:0", shape=(None, 200, 4), dtype=float32)
+decoder_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='decoder_inputs'), name='decoder_inputs', description="created by layer 'decoder_inputs'")
+encoded_seq_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name='decoder_state_inputs'), name='decoder_state_inputs', description="created by layer 'decoder_state_inputs'")
+x_decoder
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_83/add_1:0', description="created by layer 'positional_embedding_83'")
+Decoder Inputs:
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer_decoder_29/multi_head_attention_99/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer_decoder_29/layer_normalization_169/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder_29/layer_normalization_171/add:0", shape=(None, 200, 4), dtype=float32)
+Flatten decoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 200), dtype=tf.float32, name=None), name='dense_202/BiasAdd:0', description="created by layer 'dense_202'")
+Positional Embedding dense projection of inputs:
+Tensor("model_58/positional_embedding_83/sequential_117/reshape_47/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("model_58/positional_embedding_83/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("model_58/positional_embedding_83/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("model_58/transformer_decoder_29/multi_head_attention_99/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("model_58/transformer_decoder_29/layer_normalization_169/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("model_58/transformer_decoder_29/layer_normalization_171/add:0", shape=(None, 200, 4), dtype=float32)
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+positional_embedding_82 (Positi (None, 200, 4)       160800      encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+transformer_encoder_40 (Transfo (None, 200, 4)       329752      positional_embedding_82[0][0]
+__________________________________________________________________________________________________
+model_58 (Functional)           (None, 200, 200)     181484      decoder_inputs[0][0]
+                                                                 transformer_encoder_40[0][0]
+==================================================================================================
+Total params: 672,036
+Trainable params: 672,036
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+positional_embedding_82 (Positi (None, 200, 4)       160800      encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+transformer_encoder_40 (Transfo (None, 200, 4)       329752      positional_embedding_82[0][0]
+__________________________________________________________________________________________________
+model_58 (Functional)           (None, 200, 200)     181484      decoder_inputs[0][0]
+                                                                 transformer_encoder_40[0][0]
+==================================================================================================
+Total params: 672,036
+Trainable params: 672,036
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/4
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_82/sequential_115/reshape_46/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_82/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_82/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_40/layer_normalization_167/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_40/sequential_116/dense_198/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_40/layer_normalization_168/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_58/positional_embedding_83/sequential_117/reshape_47/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_58/positional_embedding_83/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_58/positional_embedding_83/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_58/transformer_decoder_29/multi_head_attention_99/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_58/transformer_decoder_29/layer_normalization_169/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_40/layer_normalization_168/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_58/transformer_decoder_29/layer_normalization_171/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_82/sequential_115/reshape_46/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_82/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_82/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_40/layer_normalization_167/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_40/sequential_116/dense_198/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_40/layer_normalization_168/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_58/positional_embedding_83/sequential_117/reshape_47/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_58/positional_embedding_83/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_58/positional_embedding_83/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_58/transformer_decoder_29/multi_head_attention_99/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_58/transformer_decoder_29/layer_normalization_169/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_40/layer_normalization_168/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_58/transformer_decoder_29/layer_normalization_171/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_84/sequential_119/reshape_48/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_84/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder Inputs:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='encoder_inputs'), name='encoder_inputs', description="created by layer 'encoder_inputs'")
+x_encoder:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_84/add_1:0', description="created by layer 'positional_embedding_84'")
+Encoder reshaped inputs
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer_encoder_41/layer_normalization_172/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer_encoder_41/sequential_120/dense_205/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer_encoder_41/layer_normalization_173/add:0", shape=(None, 200, 4), dtype=float32)
+encoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='transformer_encoder_41/layer_normalization_173/add_1:0', description="created by layer 'transformer_encoder_41'")
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_85/sequential_121/reshape_49/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_85/add:0", shape=(None, 200, 4), dtype=float32)
+decoder_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='decoder_inputs'), name='decoder_inputs', description="created by layer 'decoder_inputs'")
+encoded_seq_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name='decoder_state_inputs'), name='decoder_state_inputs', description="created by layer 'decoder_state_inputs'")
+x_decoder
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_85/add_1:0', description="created by layer 'positional_embedding_85'")
+Decoder Inputs:
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer_decoder_30/multi_head_attention_102/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer_decoder_30/layer_normalization_174/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder_30/layer_normalization_176/add:0", shape=(None, 200, 4), dtype=float32)
+Flatten decoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 800), dtype=tf.float32, name=None), name='flatten_45/Reshape:0', description="created by layer 'flatten_45'")
+Positional Embedding dense projection of inputs:
+Tensor("model_60/positional_embedding_85/sequential_121/reshape_49/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("model_60/positional_embedding_85/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("model_60/positional_embedding_85/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("model_60/transformer_decoder_30/multi_head_attention_102/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("model_60/transformer_decoder_30/layer_normalization_174/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("model_60/transformer_decoder_30/layer_normalization_176/add:0", shape=(None, 200, 4), dtype=float32)
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+positional_embedding_84 (Positi (None, 200, 4)       160800      encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+transformer_encoder_41 (Transfo (None, 200, 4)       329752      positional_embedding_84[0][0]
+__________________________________________________________________________________________________
+model_60 (Functional)           (None, 800)          180484      decoder_inputs[0][0]
+                                                                 transformer_encoder_41[0][0]
+==================================================================================================
+Total params: 671,036
+Trainable params: 671,036
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/4
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_84/sequential_119/reshape_48/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_84/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_84/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_41/layer_normalization_172/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_41/sequential_120/dense_205/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_41/layer_normalization_173/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_60/positional_embedding_85/sequential_121/reshape_49/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_60/positional_embedding_85/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_60/positional_embedding_85/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_60/transformer_decoder_30/multi_head_attention_102/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_60/transformer_decoder_30/layer_normalization_174/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_41/layer_normalization_173/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_60/transformer_decoder_30/layer_normalization_176/add:0", shape=(None, 200, 4), dtype=float32)
+Epoch 1/5
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_84/sequential_119/reshape_48/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_84/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_84/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_41/layer_normalization_172/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_41/sequential_120/dense_205/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_41/layer_normalization_173/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_60/positional_embedding_85/sequential_121/reshape_49/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_60/positional_embedding_85/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_60/positional_embedding_85/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_60/transformer_decoder_30/multi_head_attention_102/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_60/transformer_decoder_30/layer_normalization_174/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_41/layer_normalization_173/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_60/transformer_decoder_30/layer_normalization_176/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder Inputs:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='encoder_inputs'), name='encoder_inputs', description="created by layer 'encoder_inputs'")
+x_encoder:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_86/add_1:0', description="created by layer 'positional_embedding_86'")
+Encoder reshaped inputs
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+encoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='transformer_encoder_42/layer_normalization_178/add_1:0', description="created by layer 'transformer_encoder_42'")
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+decoder_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='decoder_inputs'), name='decoder_inputs', description="created by layer 'decoder_inputs'")
+encoded_seq_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name='decoder_state_inputs'), name='decoder_state_inputs', description="created by layer 'decoder_state_inputs'")
+x_decoder
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_87/add_1:0', description="created by layer 'positional_embedding_87'")
+Decoder Inputs:
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+Flatten decoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name=None), name='dense_215/BiasAdd:0', description="created by layer 'dense_215'")
+Positional Embedding dense projection of inputs:
+Tensor("model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+Model: "transformer"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+encoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+positional_embedding_86 (Positi (None, 200, 4)       160800      encoder_inputs[0][0]
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     [(None, 200)]        0
+__________________________________________________________________________________________________
+transformer_encoder_42 (Transfo (None, 200, 4)       329752      positional_embedding_86[0][0]
+__________________________________________________________________________________________________
+model_62 (Functional)           (None, 200)          340684      decoder_inputs[0][0]
+                                                                 transformer_encoder_42[0][0]
+==================================================================================================
+Total params: 831,236
+Trainable params: 831,236
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Epoch 1/4
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+1/9 [==>...........................] - ETA: 2:25 - loss: 3.5845 - mean_squared_error: 3.5845 - mean_absolute_error: 1.5149 - mean_absolute_percentage_error: 229.2365 - cosine_proximity: -0.0263Epoch 1/5
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+WARNING:tensorflow:5 out of the last 15 calls to <function Model.make_train_function.<locals>.train_function at 0x7f8c061eb790> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+
+
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 1.9080 - mean_squared_error: 1.9080 - mean_absolute_error: 1.1028 - mean_absolute_percentage_error: 168.6729 - cosine_proximity: 0.4592Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+9/9 [==============================] - 41s 4s/step - loss: 1.9079 - mean_squared_error: 1.9079 - mean_absolute_error: 1.1028 - mean_absolute_percentage_error: 168.7243 - cosine_proximity: 0.4593 - val_loss: 0.3100 - val_mean_squared_error: 0.3100 - val_mean_absolute_error: 0.4538 - val_mean_absolute_percentage_error: 69.7070 - val_cosine_proximity: 0.7913
+Epoch 2/5
+
+2/9 [=====>........................] - ETA: 27s - loss: 1.8909 - mean_squared_error: 1.8909 - mean_absolute_error: 1.1015 - mean_absolute_percentage_error: 168.4784 - cosine_proximity: 0.4651Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+
+
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 1.8869 - mean_squared_error: 1.8869 - mean_absolute_error: 1.0961 - mean_absolute_percentage_error: 167.6752 - cosine_proximity: 0.4654Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_86/sequential_123/reshape_50/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_86/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_86/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_42/layer_normalization_177/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_42/sequential_124/dense_211/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_62/positional_embedding_87/sequential_125/reshape_51/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_62/positional_embedding_87/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_62/positional_embedding_87/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_62/transformer_decoder_31/multi_head_attention_105/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_179/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_42/layer_normalization_178/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_62/transformer_decoder_31/layer_normalization_181/add:0", shape=(None, 200, 4), dtype=float32)
+9/9 [==============================] - 38s 4s/step - loss: 1.8881 - mean_squared_error: 1.8881 - mean_absolute_error: 1.0964 - mean_absolute_percentage_error: 167.7676 - cosine_proximity: 0.4650 - val_loss: 0.3100 - val_mean_squared_error: 0.3100 - val_mean_absolute_error: 0.4538 - val_mean_absolute_percentage_error: 69.7070 - val_cosine_proximity: 0.7913
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder Inputs:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='encoder_inputs'), name='encoder_inputs', description="created by layer 'encoder_inputs'")
+x_encoder:
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_88/add_1:0', description="created by layer 'positional_embedding_88'")
+Encoder reshaped inputs
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+encoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='transformer_encoder_43/layer_normalization_183/add_1:0', description="created by layer 'transformer_encoder_43'")
+Positional Embedding Shape:
+(200, 4)
+Positional Embedding dense projection of inputs:
+Tensor("positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+decoder_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name='decoder_inputs'), name='decoder_inputs', description="created by layer 'decoder_inputs'")
+encoded_seq_inputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name='decoder_state_inputs'), name='decoder_state_inputs', description="created by layer 'decoder_state_inputs'")
+x_decoder
+KerasTensor(type_spec=TensorSpec(shape=(None, 200, 4), dtype=tf.float32, name=None), name='positional_embedding_89/add_1:0', description="created by layer 'positional_embedding_89'")
+Decoder Inputs:
+Tensor("Placeholder:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+Flatten decoder_outputs
+KerasTensor(type_spec=TensorSpec(shape=(None, 200), dtype=tf.float32, name=None), name='dense_222/BiasAdd:0', description="created by layer 'dense_222'")
+Positional Embedding dense projection of inputs:
+Tensor("model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("Placeholder_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+
+
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 3.5426 - mean_squared_error: 3.5426 - mean_absolute_error: 1.5139 - mean_absolute_percentage_error: 228.1937 - cosine_proximity: 0.0052Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+9/9 [==============================] - 45s 5s/step - loss: 3.5420 - mean_squared_error: 3.5420 - mean_absolute_error: 1.5138 - mean_absolute_percentage_error: 228.2149 - cosine_proximity: 0.0050 - val_loss: 1.9606 - val_mean_squared_error: 1.9606 - val_mean_absolute_error: 1.1553 - val_mean_absolute_percentage_error: 171.9139 - val_cosine_proximity: 0.0038
+encoder_inputs: Approx (avg) train time for 1 epochs =  45.29546284675598
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+
+
+
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 3.5548 - mean_squared_error: 3.5548 - mean_absolute_error: 1.5149 - mean_absolute_percentage_error: 228.1647 - cosine_proximity: 0.0086 Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+WARNING:tensorflow:5 out of the last 87 calls to <function Model.make_test_function.<locals>.test_function at 0x7f8ea7f4fdc0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+9/9 [==============================] - 126s 14s/step - loss: 3.5552 - mean_squared_error: 3.5552 - mean_absolute_error: 1.5152 - mean_absolute_percentage_error: 228.2682 - cosine_proximity: 0.0081 - val_loss: 1.9391 - val_mean_squared_error: 1.9391 - val_mean_absolute_error: 1.1532 - val_mean_absolute_percentage_error: 171.7442 - val_cosine_proximity: 0.0061
+positional_embedding_88: Approx (avg) train time for 1 epochs =  125.52048993110657
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+
+
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 3.5384 - mean_squared_error: 3.5384 - mean_absolute_error: 1.5134 - mean_absolute_percentage_error: 228.3035 - cosine_proximity: 0.0069Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+WARNING:tensorflow:6 out of the last 89 calls to <function Model.make_test_function.<locals>.test_function at 0x7f8e93d3a5e0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+9/9 [==============================] - 43s 5s/step - loss: 3.5398 - mean_squared_error: 3.5398 - mean_absolute_error: 1.5137 - mean_absolute_percentage_error: 228.4037 - cosine_proximity: 0.0067 - val_loss: 1.9391 - val_mean_squared_error: 1.9391 - val_mean_absolute_error: 1.1532 - val_mean_absolute_percentage_error: 171.7442 - val_cosine_proximity: 0.0061
+decoder_inputs: Approx (avg) train time for 1 epochs =  42.71782398223877
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+
+
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 3.4985 - mean_squared_error: 3.4985 - mean_absolute_error: 1.5016 - mean_absolute_percentage_error: 226.5595 - cosine_proximity: 0.0082Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+WARNING:tensorflow:6 out of the last 11 calls to <function Model.make_test_function.<locals>.test_function at 0x7f8c0fbc4a60> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+9/9 [==============================] - 105s 11s/step - loss: 3.4976 - mean_squared_error: 3.4976 - mean_absolute_error: 1.5014 - mean_absolute_percentage_error: 226.5971 - cosine_proximity: 0.0079 - val_loss: 1.8621 - val_mean_squared_error: 1.8621 - val_mean_absolute_error: 1.1280 - val_mean_absolute_percentage_error: 167.5721 - val_cosine_proximity: 0.0066
+transformer_encoder_43: Approx (avg) train time for 1 epochs =  104.87306690216064
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+
+
+
+
+
+
+
+9/9 [==============================] - ETA: 0s - loss: 2.4501 - mean_squared_error: 2.4501 - mean_absolute_error: 1.2404 - mean_absolute_percentage_error: 188.6218 - cosine_proximity: 0.3216Positional Embedding dense projection of inputs:
+Tensor("transformer/positional_embedding_88/sequential_127/reshape_52/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/positional_embedding_88/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder reshaped inputs
+Tensor("transformer/positional_embedding_88/add_1:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_input
+Tensor("transformer/transformer_encoder_43/layer_normalization_182/add:0", shape=(None, 200, 4), dtype=float32)
+Encoder proj_output
+Tensor("transformer/transformer_encoder_43/sequential_128/dense_218/BiasAdd:0", shape=(None, 200, 4), dtype=float32)
+Encoder Shape
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding dense projection of inputs:
+Tensor("transformer/model_64/positional_embedding_89/sequential_129/reshape_53/Reshape:0", shape=(None, 200, 4), dtype=float32)
+Positional Embedding Return Value
+Tensor("transformer/model_64/positional_embedding_89/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder Inputs:
+Tensor("transformer/model_64/positional_embedding_89/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder attention_output_1
+Tensor("transformer/model_64/transformer_decoder_32/multi_head_attention_108/attention_output/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder out_1
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_184/add:0", shape=(None, 200, 4), dtype=float32)
+Decoder encoder_outputs
+Tensor("transformer/transformer_encoder_43/layer_normalization_183/add_1:0", shape=(None, 200, 4), dtype=float32)
+Decoder Shape
+Tensor("transformer/model_64/transformer_decoder_32/layer_normalization_186/add:0", shape=(None, 200, 4), dtype=float32)
+WARNING:tensorflow:6 out of the last 11 calls to <function Model.make_test_function.<locals>.test_function at 0x7f8c0e440160> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+9/9 [==============================] - 44s 5s/step - loss: 2.4127 - mean_squared_error: 2.4127 - mean_absolute_error: 1.2307 - mean_absolute_percentage_error: 187.2861 - cosine_proximity: 0.3344 - val_loss: 0.1336 - val_mean_squared_error: 0.1336 - val_mean_absolute_error: 0.2913 - val_mean_absolute_percentage_error: 43.3530 - val_cosine_proximity: 0.8743
+model_64: Approx (avg) train time for 1 epochs =  44.44882774353027
