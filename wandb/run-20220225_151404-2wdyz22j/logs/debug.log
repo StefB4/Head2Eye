@@ -1,0 +1,155 @@
+2022-02-25 15:14:04,769 INFO    MainThread:55133 [wandb_setup.py:_flush():71] setting env: {}
+2022-02-25 15:14:04,770 INFO    MainThread:55133 [wandb_setup.py:_flush():71] setting login settings: {}
+2022-02-25 15:14:04,771 INFO    MainThread:55133 [wandb_init.py:_log_setup():371] Logging user logs to /Users/stefan/Documents/Studium/CogSci in Osnabrück/Mehr/HiWi-Tätigkeiten/NBP/Content/Head2EyeMovement/Head2Eye/wandb/run-20220225_151404-2wdyz22j/logs/debug.log
+2022-02-25 15:14:04,772 INFO    MainThread:55133 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/stefan/Documents/Studium/CogSci in Osnabrück/Mehr/HiWi-Tätigkeiten/NBP/Content/Head2EyeMovement/Head2Eye/wandb/run-20220225_151404-2wdyz22j/logs/debug-internal.log
+2022-02-25 15:14:04,773 INFO    MainThread:55133 [wandb_init.py:_jupyter_setup():321] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x7fb993e74820>
+2022-02-25 15:14:04,776 INFO    MainThread:55133 [wandb_init.py:init():404] calling init triggers
+2022-02-25 15:14:04,777 INFO    MainThread:55133 [wandb_init.py:init():409] wandb.init called with sweep_config: {}
+config: {}
+2022-02-25 15:14:04,777 INFO    MainThread:55133 [wandb_init.py:init():460] starting backend
+2022-02-25 15:14:04,778 INFO    MainThread:55133 [backend.py:_multiprocessing_setup():99] multiprocessing start_methods=spawn,fork,forkserver, using: spawn
+2022-02-25 15:14:04,821 INFO    MainThread:55133 [backend.py:ensure_launched():216] starting backend process...
+2022-02-25 15:14:04,850 INFO    MainThread:55133 [backend.py:ensure_launched():221] started backend process with pid: 55248
+2022-02-25 15:14:04,864 INFO    MainThread:55133 [wandb_init.py:init():469] backend started and connected
+2022-02-25 15:14:05,015 INFO    MainThread:55133 [wandb_run.py:_label_probe_notebook():911] probe notebook
+2022-02-25 15:14:05,024 INFO    MainThread:55133 [wandb_init.py:init():533] updated telemetry
+2022-02-25 15:14:05,054 INFO    MainThread:55133 [wandb_init.py:init():563] communicating current version
+2022-02-25 15:14:06,484 INFO    MainThread:55133 [wandb_init.py:init():568] got version response upgrade_message: "wandb version 0.12.10 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2022-02-25 15:14:06,485 INFO    MainThread:55133 [wandb_init.py:init():578] communicating run to backend with 30 second timeout
+2022-02-25 15:14:06,722 INFO    MainThread:55133 [wandb_init.py:init():606] starting run threads in backend
+2022-02-25 15:14:11,730 INFO    MainThread:55133 [wandb_run.py:_console_start():1810] atexit reg
+2022-02-25 15:14:11,731 INFO    MainThread:55133 [wandb_run.py:_redirect():1684] redirect: SettingsConsole.WRAP
+2022-02-25 15:14:11,733 INFO    MainThread:55133 [wandb_run.py:_redirect():1721] Wrapping output streams.
+2022-02-25 15:14:11,734 INFO    MainThread:55133 [wandb_run.py:_redirect():1745] Redirects installed.
+2022-02-25 15:14:11,734 INFO    MainThread:55133 [wandb_init.py:init():633] run started, returning control to user process
+2022-02-25 15:14:11,738 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:11,738 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:11,745 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:11,746 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:11,748 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:11,767 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:12,131 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:12,131 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:12,144 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:12,553 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:12,553 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:12,560 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:12,566 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:12,567 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:12,574 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:12,580 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:12,580 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:12,590 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:12,918 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:12,919 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:12,924 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:13,028 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:13,028 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:14:13,033 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:14:13,034 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:14:13,034 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:16:12,217 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:16:12,226 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:16:12,226 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:16:49,476 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:16:50,634 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:16:50,634 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:22:26,912 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:22:26,921 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:22:26,922 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:22:27,350 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:22:28,859 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:22:28,860 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:22:30,782 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:22:30,783 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:22:30,783 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:22:43,033 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:22:43,036 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:22:43,036 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:22:43,952 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:22:43,953 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:22:43,953 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:22:45,107 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:24:00,041 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:24:00,451 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:25:21,220 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:25:21,240 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:25:21,240 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:25:22,262 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:25:24,033 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:25:24,033 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:25:35,876 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:25:36,609 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:25:36,610 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:25:44,206 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:25:44,874 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:25:44,874 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:26:13,576 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:26:13,588 INFO    MainThread:55133 [wandb_init.py:_pause_backend():284] pausing backend
+2022-02-25 15:26:13,589 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:26:28,299 INFO    MainThread:55133 [wandb_init.py:_resume_backend():293] resuming backend
+2022-02-25 15:26:28,332 INFO    MainThread:55133 [wandb_setup.py:_flush():71] setting env: {}
+2022-02-25 15:26:28,333 INFO    MainThread:55133 [wandb_setup.py:_flush():71] setting login settings: {}
+2022-02-25 15:26:28,333 INFO    MainThread:55133 [wandb_init.py:_log_setup():371] Logging user logs to /Users/stefan/Documents/Studium/CogSci in Osnabrück/Mehr/HiWi-Tätigkeiten/NBP/Content/Head2EyeMovement/Head2Eye/wandb/run-20220225_152628-3drgbh7i/logs/debug.log
+2022-02-25 15:26:28,333 INFO    MainThread:55133 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/stefan/Documents/Studium/CogSci in Osnabrück/Mehr/HiWi-Tätigkeiten/NBP/Content/Head2EyeMovement/Head2Eye/wandb/run-20220225_152628-3drgbh7i/logs/debug-internal.log
+2022-02-25 15:26:28,333 INFO    MainThread:55133 [wandb_init.py:init():404] calling init triggers
+2022-02-25 15:26:28,333 INFO    MainThread:55133 [wandb_init.py:init():409] wandb.init called with sweep_config: {}
+config: {}
+2022-02-25 15:26:28,333 INFO    MainThread:55133 [wandb_init.py:init():424] re-initializing run, found existing run on stack: 2wdyz22j
+2022-02-25 15:26:28,338 INFO    MainThread:55133 [wandb_run.py:finish():1457] finishing run sballe/Head2Eye/2wdyz22j
+2022-02-25 15:26:28,340 INFO    MainThread:55133 [jupyter.py:save_history():429] not saving jupyter history
+2022-02-25 15:26:28,341 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:26:28,341 INFO    MainThread:55133 [wandb_init.py:_jupyter_teardown():303] cleaning up jupyter logic
+2022-02-25 15:26:28,342 INFO    MainThread:55133 [wandb_run.py:_atexit_cleanup():1780] got exitcode: 0
+2022-02-25 15:26:28,344 INFO    MainThread:55133 [wandb_run.py:_restore():1752] restore
+2022-02-25 15:26:28,797 INFO    MainThread:55133 [wandb_run.py:_restore():1752] restore
+2022-02-25 15:26:28,813 ERROR   MainThread:55133 [wandb_init.py:init():958] error
+Traceback (most recent call last):
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1788, in _atexit_cleanup
+    self._on_finish()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1963, in _on_finish
+    self._backend.interface._publish_telemetry(self._telemetry_obj)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 67, in _publish_telemetry
+    self._publish(rec)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_queue.py", line 45, in _publish
+    raise Exception("The wandb backend process has shutdown")
+Exception: The wandb backend process has shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_init.py", line 931, in init
+    run = wi.init()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_init.py", line 437, in init
+    self._wl._global_run_stack[-1].finish()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1463, in finish
+    self._atexit_cleanup(exit_code=exit_code)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/wandb_run.py", line 1797, in _atexit_cleanup
+    self._backend.cleanup()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/backend/backend.py", line 245, in cleanup
+    self.interface.join()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 458, in join
+    super().join()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface.py", line 599, in join
+    _ = self._communicate_shutdown()
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 455, in _communicate_shutdown
+    _ = self._communicate(record)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 213, in _communicate
+    return self._communicate_async(rec, local=local).get(timeout=timeout)
+  File "/Users/stefan/opt/anaconda3/envs/Body2Eye/lib/python3.8/site-packages/wandb/sdk/interface/interface_shared.py", line 218, in _communicate_async
+    raise Exception("The wandb backend process has shutdown")
+Exception: The wandb backend process has shutdown
+2022-02-25 15:26:33,902 INFO    MainThread:55133 [wandb_setup.py:_flush():71] setting env: {}
+2022-02-25 15:26:33,902 INFO    MainThread:55133 [wandb_setup.py:_flush():71] setting login settings: {}
+2022-02-25 15:26:33,902 INFO    MainThread:55133 [wandb_init.py:_log_setup():371] Logging user logs to /Users/stefan/Documents/Studium/CogSci in Osnabrück/Mehr/HiWi-Tätigkeiten/NBP/Content/Head2EyeMovement/Head2Eye/wandb/run-20220225_152633-2ro74wxv/logs/debug.log
+2022-02-25 15:26:33,903 INFO    MainThread:55133 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/stefan/Documents/Studium/CogSci in Osnabrück/Mehr/HiWi-Tätigkeiten/NBP/Content/Head2EyeMovement/Head2Eye/wandb/run-20220225_152633-2ro74wxv/logs/debug-internal.log
+2022-02-25 15:26:33,903 INFO    MainThread:55133 [wandb_init.py:_jupyter_setup():321] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x7fb6bde67c10>
+2022-02-25 15:26:33,903 INFO    MainThread:55133 [wandb_init.py:init():404] calling init triggers
+2022-02-25 15:26:33,903 INFO    MainThread:55133 [wandb_init.py:init():409] wandb.init called with sweep_config: {}
+config: {}
+2022-02-25 15:26:33,903 INFO    MainThread:55133 [wandb_init.py:init():424] re-initializing run, found existing run on stack: 2wdyz22j
+2022-02-25 15:26:33,905 INFO    MainThread:55133 [wandb_run.py:finish():1457] finishing run sballe/Head2Eye/2wdyz22j
+2022-02-25 15:26:33,906 INFO    MainThread:55133 [jupyter.py:save_history():429] not saving jupyter history
+2022-02-25 15:26:33,906 INFO    MainThread:55133 [jupyter.py:save_ipynb():374] not saving jupyter notebook
+2022-02-25 15:26:33,907 INFO    MainThread:55133 [wandb_init.py:_jupyter_teardown():303] cleaning up jupyter logic

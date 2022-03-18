@@ -64,7 +64,7 @@ def eye_outlier_removal_sigma(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, m=1.5):
 
     For left-bound clusters, use next correct value to the right, 
     for right-bound clusters, use next correct value to the left,
-    for clusters within the signal, use average between value to the left and to the right. 
+    for clusters within the signal, linearly interpolate between value to the left and to the right. 
     '''
 
     # preparation
@@ -109,12 +109,14 @@ def eye_outlier_removal_sigma(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, m=1.5):
             
         # all other cases
         elif (max_c-min_c)<=21:
-            pos_x[min_c:max_c+1] = (pos_x[min_c-1] + pos_x[max_c+1])/2
-            pos_y[min_c:max_c+1] = (pos_y[min_c-1] + pos_y[max_c+1])/2
-            pos_z[min_c:max_c+1] = (pos_z[min_c-1] + pos_z[max_c+1])/2
-            dir_x[min_c:max_c+1] = (dir_x[min_c-1] + dir_x[max_c+1])/2
-            dir_y[min_c:max_c+1] = (dir_y[min_c-1] + dir_y[max_c+1])/2
-            dir_z[min_c:max_c+1] = (dir_z[min_c-1] + dir_z[max_c+1])/2
+
+            # interpolate linearly between left and right bound
+            pos_x[min_c:max_c+1] = np.linspace(pos_x[min_c], pos_x[max_c], len(pos_x[min_c:max_c+1]))
+            pos_y[min_c:max_c+1] = np.linspace(pos_y[min_c], pos_y[max_c], len(pos_y[min_c:max_c+1]))
+            pos_z[min_c:max_c+1] = np.linspace(pos_z[min_c], pos_z[max_c], len(pos_z[min_c:max_c+1]))
+            dir_x[min_c:max_c+1] = np.linspace(dir_x[min_c], dir_x[max_c], len(dir_x[min_c:max_c+1]))
+            dir_y[min_c:max_c+1] = np.linspace(dir_y[min_c], dir_y[max_c], len(dir_y[min_c:max_c+1]))
+            dir_z[min_c:max_c+1] = np.linspace(dir_z[min_c], dir_z[max_c], len(dir_z[min_c:max_c+1]))
 
         else:
             pass
@@ -134,7 +136,7 @@ def eye_outlier_removal_zero_values(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, pa
     
     For left-bound clusters, use next (including padding) correct value to the right, 
     for right-bound clusters, use next (including padding) correct value to the left,
-    for clusters within the signal, use average between value to the left and to the right (both including padding). 
+    for clusters within the signal, linearly interpolate between value to the left and to the right (both including padding). 
     '''
 
     # preparation
@@ -216,12 +218,15 @@ def eye_outlier_removal_zero_values(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, pa
                 padding = len(pos_x) - 1 - max_c
             if min_c - padding < 0: 
                 padding = min_c
-            pos_x[min_c-padding:max_c+padding+1] = (pos_x[min_c-padding] + pos_x[max_c+padding])/2
-            pos_y[min_c-padding:max_c+padding+1] = (pos_y[min_c-padding] + pos_y[max_c+padding])/2
-            pos_z[min_c-padding:max_c+padding+1] = (pos_z[min_c-padding] + pos_z[max_c+padding])/2
-            dir_x[min_c-padding:max_c+padding+1] = (dir_x[min_c-padding] + dir_x[max_c+padding])/2
-            dir_y[min_c-padding:max_c+padding+1] = (dir_y[min_c-padding] + dir_y[max_c+padding])/2
-            dir_z[min_c-padding:max_c+padding+1] = (dir_z[min_c-padding] + dir_z[max_c+padding])/2
+            
+            # interpolate linearly between left and right bound
+            pos_x[min_c-padding:max_c+padding+1] = np.linspace(pos_x[min_c-padding], pos_x[max_c+padding], len(pos_x[min_c-padding:max_c+padding+1]))
+            pos_y[min_c-padding:max_c+padding+1] = np.linspace(pos_y[min_c-padding], pos_y[max_c+padding], len(pos_y[min_c-padding:max_c+padding+1]))
+            pos_z[min_c-padding:max_c+padding+1] = np.linspace(pos_z[min_c-padding], pos_z[max_c+padding], len(pos_z[min_c-padding:max_c+padding+1]))
+            dir_x[min_c-padding:max_c+padding+1] = np.linspace(dir_x[min_c-padding], dir_x[max_c+padding], len(dir_x[min_c-padding:max_c+padding+1]))
+            dir_y[min_c-padding:max_c+padding+1] = np.linspace(dir_y[min_c-padding], dir_y[max_c+padding], len(dir_y[min_c-padding:max_c+padding+1]))
+            dir_z[min_c-padding:max_c+padding+1] = np.linspace(dir_z[min_c-padding], dir_z[max_c+padding], len(dir_z[min_c-padding:max_c+padding+1]))
+
 
             # add info 
             info_df.loc[cluster, 'Length incl. padding'] = max_c + padding - (min_c - padding)
