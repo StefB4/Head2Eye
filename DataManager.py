@@ -11,10 +11,12 @@ import pandas as pd
 from Helpers import read_normalized_json_to_df, save_to_disk, load_from_disk, create_rolling_windows, eye_outlier_removal_sigma, eye_outlier_removal_zero_values
 from AngleHelpers import create_relative_directions, create_relative_directions_consider_roll
 
+SKIP_TRAINING_SCENE_DATA_LOADING = True
+VALID_AREA_NAMES = ["MountainRoad","CountryRoad","Autobahn","Westbrueck"]
+
 RESAMPLE_STRATEGY = "MEAN" # "FILL"
 TIMESTAMP_DECIMALS = 2 
 TIME_DELTA = 0.01
-BOOTSTRAP_BASEPATH = "./bootstrapped_participant_data/"
 
 REF_APPLY_CONSIDER_ROLL = True
 REF_APPLIED_REMOVE_OUTLIERS = True 
@@ -27,7 +29,7 @@ class ParticipantData:
     (Data includes eyetracking, input, participantcalibrationdata and scenedata)
     '''
    
-    def __init__(self, eyetracking_filepaths, input_filepaths, calibration_filepath, scenedata_filepaths, bootstrap_file_loading=False, verbose = False):
+    def __init__(self, eyetracking_filepaths, input_filepaths, calibration_filepath, scenedata_filepaths, bootstrap_file_loading=False, bootstrap_basepath = "./bootstrapped_participant_data/", verbose = False):
         '''
         Constructor.
         @ Paths to the relevant files 
@@ -80,15 +82,16 @@ class ParticipantData:
         self.input_filepaths = input_filepaths
         self.calibration_filepath = calibration_filepath
         self.scenedata_filepaths = scenedata_filepaths
+        self.bootstrap_basepath = bootstrap_basepath
         
         # store participant id and number of recorded areas and verbosity and whether reference data has been applied
         self.participant_id = os.path.basename(eyetracking_filepaths[0]).split("_")[0]
-        self.number_of_recorded_areas = len(eyetracking_filepaths)
         self.verbose = verbose
         self.reference_data_applied = False 
         
-        # init data dictionaries 
+        # init data dictionaries and available areas list
         print("ParticipantData: Initialising participant " + self.participant_id + ".")
+        self.available_areas = [] # filled during construction  
         self.eyetracking_data = {}
         self.input_data = {}
         self.calibration_data = {}
@@ -97,17 +100,10 @@ class ParticipantData:
         self.golden_event_info = {}
         self.golden_segment_data_ref_applied = {} # generated later, not during construction
         
+        
         # bootstrap file loading
-        if bootstrap_file_loading and os.path.isfile(os.path.join(BOOTSTRAP_BASEPATH, "./bootstrap_" + str(self.participant_id) + ".pickle")):
-            bootstrap_data = load_from_disk(os.path.join(BOOTSTRAP_BASEPATH, "./bootstrap_" + str(self.participant_id) + ".pickle"))
-            self.participant_id = bootstrap_data["participant_id"]
-            self.eyetracking_data = bootstrap_data["eyetracking_data"]
-            self.input_data = bootstrap_data["input_data"]
-            self.calibration_data = bootstrap_data["calibration_data"]
-            self.scene_data = bootstrap_data["scene_data"]
-            self.golden_segment_data_vanilla = bootstrap_data["golden_segment_data_vanilla"]
-            self.golden_event_info = bootstrap_data["golden_event_info"] 
-            print("ParticipantData: Loaded data (bootstrapped) for participant " + str(self.participant_id) + ".")
+        if bootstrap_file_loading and os.path.isfile(os.path.join(bootstrap_basepath, "./bootstrap_" + str(self.participant_id) + ".pickle")):
+            self._load_bootstrap()
     
         else:
             # process raw data 
@@ -121,19 +117,39 @@ class ParticipantData:
             
             # save to disk 
             if bootstrap_file_loading:
-                bootstrap_data = {}
-                bootstrap_data["participant_id"] = self.participant_id
-                bootstrap_data["eyetracking_data"] = self.eyetracking_data
-                bootstrap_data["input_data"] = self.input_data
-                bootstrap_data["calibration_data"] = self.calibration_data
-                bootstrap_data["scene_data"] = self.scene_data
-                bootstrap_data["golden_segment_data_vanilla"] = self.golden_segment_data_vanilla
-                bootstrap_data["golden_event_info"] = self.golden_event_info
-                save_to_disk(bootstrap_data,os.path.join(BOOTSTRAP_BASEPATH, "./bootstrap_" + str(self.participant_id) + ".pickle"))
-                if self.verbose:
-                    print("ParticipantData: Saved bootstrapped data to disk.")
-                    print("")
+                self._save_bootstrap()
+                
     
+    def _save_bootstrap(self):
+        bootstrap_data = {}
+        bootstrap_data["participant_id"] = self.participant_id
+        bootstrap_data["eyetracking_data"] = self.eyetracking_data
+        bootstrap_data["input_data"] = self.input_data
+        bootstrap_data["calibration_data"] = self.calibration_data
+        bootstrap_data["scene_data"] = self.scene_data
+        bootstrap_data["golden_segment_data_vanilla"] = self.golden_segment_data_vanilla
+        bootstrap_data["golden_segment_data_ref_applied"] = self.golden_segment_data_ref_applied
+        bootstrap_data["golden_event_info"] = self.golden_event_info
+        bootstrap_data["available_areas"] = self.available_areas
+        save_to_disk(bootstrap_data,os.path.join(self.bootstrap_basepath, "./bootstrap_" + str(self.participant_id) + ".pickle"))
+        if self.verbose:
+            print("ParticipantData: Saved bootstrapped data to disk.")   
+
+
+    def _load_bootstrap(self):
+        bootstrap_data = load_from_disk(os.path.join(self.bootstrap_basepath, "./bootstrap_" + str(self.participant_id) + ".pickle"))
+        self.participant_id = bootstrap_data["participant_id"]
+        self.eyetracking_data = bootstrap_data["eyetracking_data"]
+        self.input_data = bootstrap_data["input_data"]
+        self.calibration_data = bootstrap_data["calibration_data"]
+        self.scene_data = bootstrap_data["scene_data"]
+        self.golden_segment_data_vanilla = bootstrap_data["golden_segment_data_vanilla"]
+        self.golden_segment_data_ref_applied = bootstrap_data["golden_segment_data_ref_applied"]
+        self.golden_event_info = bootstrap_data["golden_event_info"] 
+        self.available_areas = bootstrap_data["available_areas"] 
+        print("ParticipantData: Loaded data (bootstrapped) for participant " + str(self.participant_id) + ".") 
+
+
     def _read_raw_data(self, filepaths):
         '''
         Read raw files into dictionary. 
@@ -156,7 +172,7 @@ class ParticipantData:
             elif "TrainingScene" in filename:
                 token = "TrainingScene"
             else:  # not defined 
-                print("ParticipantData: Found undefined area token in filename" + filename + "!")
+                print("ParticipantData: WARNING. Found undefined area token in filename " + filename + "!")
                 continue # in the loop     
             data[token] = {}
             data[token]["filename"] = filename
@@ -188,17 +204,40 @@ class ParticipantData:
         self.calibration_data['filename'] = self.calibration_filepath
         self.calibration_data['full_df'] = read_normalized_json_to_df(self.calibration_filepath)
         
+        # Exclude Training Scene data
+        if SKIP_TRAINING_SCENE_DATA_LOADING:
+            self.eyetracking_data.pop('TrainingScene',None)
+            self.input_data.pop('TrainingScene',None)
+            self.scene_data.pop('TrainingScene',None)
+
+        # Check availability of areas
+        self.available_areas = list(self.eyetracking_data.keys())
+        self.available_areas = [area for area in self.available_areas if area in VALID_AREA_NAMES] # make sure extracted names are valid
+        if len(self.available_areas) < 4:
+            print("ParticipantData: WARNING. Eye tracking data does not contain all areas, but only:", self.available_areas)
+        if (sorted(self.available_areas) != sorted(list(self.input_data.keys()))) or (sorted(self.available_areas) != sorted(list(self.scene_data.keys()))):
+            print("ParticipantData: WARNING. The available areas in eye tracking, input or scene data do not correspond.")
+            print("EyeTracking Available Areas:",self.available_areas)
+            print("Input Available Areas:",list(self.input_data.keys()))
+            print("Scene Available Areas:",list(self.scene_data.keys()))
+
+
+        
         
         
     def _extract_event_information(self):
         
+        if len(self.scene_data.keys()) < 4:
+            print("ParticipantData: WARNING. Participant", self.participant_id, "only has event information for", self.scene_data.keys())
+
         # Extract most important event information 
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn","TrainingScene"]:
+        # Some participant data contains "TrainingScene" data, some does not, hence take info from keys of top level dict entry
+        for area in self.scene_data.keys():
+
             self.scene_data[area]["number_of_events"] = len(self.scene_data[area]["full_df"]["EventBehavior"][0])
             self.scene_data[area]["events"] = {}
             for idx, event in enumerate(self.scene_data[area]["full_df"]["EventBehavior"][0]):
                 self.scene_data[area]["events"][idx] = {'name':event["EventName"],'start':event["StartofEventTimeStamp"],'stop':event["EndOfEventTimeStamp"],'succeeded':event["SuccessfulCompletionState"]}
-        
         
     
     def _extract_path_segments(self):
@@ -209,13 +248,13 @@ class ParticipantData:
         
         
         # Copy of entire dataframe input dataframe to prepare processing
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: ###### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
             self.eyetracking_data[area]["processed_df"] = self.eyetracking_data[area]["full_df"].copy(deep=True)
             self.eyetracking_data[area]["processed_df"].drop(columns=["TobiiTimeStamp","FPS","hitObjects","RightEyeIsBlinkingWorld","RightEyeIsBlinkingLocal","LeftEyeIsBlinkingWorld","LeftEyeIsBlinkingLocal"],inplace=True)
             self.eyetracking_data[area]["processed_df"]["path_segment_label"] = -9 # event label 
 
         # Give label to individual path segments, -9 is event label 
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: ##### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
             for event_idx in range(len(self.scene_data[area]["events"]) + 1):
                 cond = None 
                 if event_idx == 0: # find all datapoints with timestamps before event start timestamp 
@@ -229,7 +268,7 @@ class ParticipantData:
                 self.eyetracking_data[area]["processed_df"].loc[cond, "path_segment_label"] = event_idx
 
         # Extract path segments, add timestamps beginning at zero 
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: ##### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
             self.eyetracking_data[area]["path_segments_no_resample"] = {}
             for label in self.eyetracking_data[area]["processed_df"]["path_segment_label"].unique():
                 if (label != -9):
@@ -260,7 +299,7 @@ class ParticipantData:
 
         if self.verbose:
             print("ParticipantData: Resampled path segments (excl. events):")
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: ######  ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
 
             self.eyetracking_data[area]["path_segments_resampled"] = {}
             for segment in self.eyetracking_data[area]["path_segments_no_resample"]:
@@ -327,7 +366,7 @@ class ParticipantData:
     def _construct_segment_data(self):
         
         # extract most important infos
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: ##### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
             self.golden_segment_data_vanilla[area] = {}
             for segment in self.eyetracking_data[area]["path_segments_resampled"]:
                 self.golden_segment_data_vanilla[area][segment] = self.eyetracking_data[area]["path_segments_resampled"][segment].copy(deep = True)
@@ -336,7 +375,7 @@ class ParticipantData:
     def _construct_event_info(self):
     
         # extract event infos 
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: ###### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
             self.golden_event_info[area] = {}
             for event in self.scene_data[area]["events"]:
                 self.golden_event_info[area][event] = {}
@@ -348,7 +387,7 @@ class ParticipantData:
     def apply_reference_data(self, ref_data_dict):
         
         self.golden_segment_data_ref_applied = {}
-        for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: #######  ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
             
             self.golden_segment_data_ref_applied[area] = {}
             
@@ -480,7 +519,7 @@ class ParticipantData:
                 if self.verbose:
                     print("ParticipantData: Filtering data by Correlation Coefficients with threshold " + str(corr_coeff_threshold) + ".")
                 
-                for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+                for area in self.available_areas: ####### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
                     for segment in copy_from_data[area]:
                         
                         # use data, as corr coeffs are bigger than threshold for all measured values in that segment
@@ -511,7 +550,7 @@ class ParticipantData:
                     print("ParticipantData: Filtering data with manual settings.")
                
 
-                for area in ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+                for area in self.available_areas: ########  ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
                     
                     # check that area is wished 
                     if area not in exclude_areas:
@@ -544,6 +583,13 @@ class ParticipantData:
     
     def get_participant_id(self):
         return self.participant_id 
+    
+    def get_available_areas(self):
+        return self.available_areas
+
+    def update_bootstrapped_data(self):
+        self._save_bootstrap()
+        print("ParticipantData: Updated bootstrapped data on disk.")
         
 
 
@@ -560,7 +606,7 @@ class MeasurementData:
     Full measurement data. Contains multiple ParticipantDatas. 
     '''
     
-    def __init__(self, eyetracking_data_paths,input_data_paths,participant_calibration_data_paths,scene_data_paths,verbosity=False):
+    def __init__(self, eyetracking_data_paths,input_data_paths,participant_calibration_data_paths,scene_data_paths, participant_bootstrap_basepath, exclude_participant_ids = [], keep_participants_in_memory = True, verbosity=False):
         
         # sanity check  
         for path in eyetracking_data_paths + input_data_paths + participant_calibration_data_paths + scene_data_paths:
@@ -572,6 +618,9 @@ class MeasurementData:
         self.input_data_paths = input_data_paths
         self.participant_calibration_data_paths = participant_calibration_data_paths
         self.scene_data_paths = scene_data_paths
+        self.excluded_participant_ids = exclude_participant_ids
+        self.participant_bootstrap_basepath = participant_bootstrap_basepath
+        self.keep_participants_in_memory = keep_participants_in_memory
         self.verbose=verbosity 
         
         # init 
@@ -588,12 +637,12 @@ class MeasurementData:
         Extract unique participant ids and store corresponding file paths. 
         '''
         
-        # get the participant ids from all eyetracking data locations
+        # get the participant ids from all eyetracking data locations and exclude to be excluded ids
         participant_ids = []
         for eyetracking_path in self.eyetracking_data_paths:
             participant_ids += [os.path.basename(path).split("_EyeTracking_")[0] for path in glob.glob(eyetracking_path + "*.txt")]
         participant_ids = list(set(participant_ids))
-        self.participant_ids = participant_ids
+        self.participant_ids = [participant for participant in participant_ids if not participant in self.excluded_participant_ids]
         
         # search for data per participant 
         # create dictionary entries for each participant
@@ -635,7 +684,18 @@ class MeasurementData:
                 print("Calibration data files: " + str(calibration_data))
                 print("Scene data files: " + str(scene_data))
                 print("")
-            
+
+    def _init_single_participant(self, participant_id):
+
+        # Generate participant data 
+        return ParticipantData(self.measurement_data[participant_id]["filepaths"]["eyetracking_data"], \
+                            self.measurement_data[participant_id]["filepaths"]["input_data"], \
+                            self.measurement_data[participant_id]["filepaths"]["calibration_data"][0], \
+                            self.measurement_data[participant_id]["filepaths"]["scene_data"], 
+                            True,
+                            self.participant_bootstrap_basepath,
+                            self.verbose)
+        
             
             
     def _generate_participant_data(self):
@@ -643,29 +703,68 @@ class MeasurementData:
         Generate ParticipantData objects for all participants. 
         '''
         
-        for participant in self.participant_ids:
+        for idx, participant in enumerate(self.participant_ids):
             
-            self.measurement_data[participant]["data"] = \
-                ParticipantData(self.measurement_data[participant]["filepaths"]["eyetracking_data"], \
-                                self.measurement_data[participant]["filepaths"]["input_data"], \
-                                self.measurement_data[participant]["filepaths"]["calibration_data"][0], \
-                                self.measurement_data[participant]["filepaths"]["scene_data"], 
-                                True, self.verbose)
+            if idx % 10 == 0 and idx > 0:
+                print("MeasurementData: Generating Participant Data", idx, "out of", len(self.participant_ids)) 
+
+            # Generate participant data and store 
+            self.measurement_data[participant]["data"] = self._init_single_participant(participant)
+            
+            # Get available areas 
+            self.measurement_data[participant]["available_areas"] = self.measurement_data[participant]["data"].get_available_areas()
+
+            # Remove actual data from memory to spare memory
+            if not self.keep_participants_in_memory: 
+                self.measurement_data[participant].pop("data",None)
+
+                
     
     def get_participant_list(self):
         return self.participant_ids
     
+    def get_total_available_areas(self):
+
+        total_available = [0,0,0,0] # Westbrueck, CountryRoad, MountainRoad, Autobahn
+        
+        for participant in self.participant_ids:
             
+            if "Westbrueck" in self.measurement_data[participant]["available_areas"]:
+                total_available[0] += 1
+            if "CountryRoad" in self.measurement_data[participant]["available_areas"]:
+                total_available[1] += 1
+            if "MountainRoad" in self.measurement_data[participant]["available_areas"]:
+                total_available[2] += 1
+            if "Autobahn" in self.measurement_data[participant]["available_areas"]:
+                total_available[3] += 1
+
+        return {"Westbrueck":total_available[0],"CountryRoad":total_available[1],"MountainRoad":total_available[2],"Autobahn":total_available[3]}
+            
+
     def apply_reference_data(self,reference_data):
         '''
-        Apply supplied reference data to all subjects.
+        Apply supplied reference data to all subjects in memory.
         '''
-        print("MeasurementData: Applying reference data to all participants...")
-        for participant in self.participant_ids:
-            self.measurement_data[participant]["data"].apply_reference_data(reference_data)
-        print("MeasurementData: Done applying reference data to all participants.")
-            
-    
+        
+        # All data in memory
+        if self.keep_participants_in_memory:
+            print("MeasurementData: Applying reference data to all participants in memory...")
+            for participant in self.participant_ids:
+                self.measurement_data[participant]["data"].apply_reference_data(reference_data)
+                self.measurement_data[participant]["data"].update_bootstrapped_data()
+            print("MeasurementData: Done applying reference data to all participants in memory.")
+
+        # Process participants individually 
+        else:
+            print("MeasurementData: Applying reference data to all participants individually...")
+            for participant in self.participant_ids:
+                self.measurement_data[participant]["data"] = self._init_single_participant(participant)
+                self.measurement_data[participant]["data"].apply_reference_data(reference_data)
+                self.measurement_data[participant]["data"].update_bootstrapped_data()
+                self.measurement_data[participant].pop("data",None)
+            print("MeasurementData: Done applying reference data to all participants individually.")
+
+
     def get_data(self, use_vanilla=False, filter_data=False, filter_by_corr_coeff_dict=None, corr_coeff_threshold=0, \
                  get_first_segment=True, after_event_type_only=[True,False], \
                  exclude_areas=[], exclude_segments=[], \
@@ -676,13 +775,27 @@ class MeasurementData:
         '''      
         
         data = {}
-        
-        for participant in self.participant_ids:
-            
-            # check if participant should be skipped 
-            if not participant in exclude_participants:
-                data[participant] = self.measurement_data[participant]["data"].get_segment_data(use_vanilla=use_vanilla, filter_data=filter_data, filter_by_corr_coeff_dict=filter_by_corr_coeff_dict, corr_coeff_threshold=corr_coeff_threshold, get_first_segment=get_first_segment, after_event_type_only=after_event_type_only,exclude_areas=exclude_areas,exclude_segments=exclude_segments)
-        
+
+        # All data in memory
+        if self.keep_participants_in_memory:
+
+            for participant in self.participant_ids:
+                
+                # check if participant should be skipped 
+                if not participant in exclude_participants:
+                    data[participant] = self.measurement_data[participant]["data"].get_segment_data(use_vanilla=use_vanilla, filter_data=filter_data, filter_by_corr_coeff_dict=filter_by_corr_coeff_dict, corr_coeff_threshold=corr_coeff_threshold, get_first_segment=get_first_segment, after_event_type_only=after_event_type_only,exclude_areas=exclude_areas,exclude_segments=exclude_segments)
+    
+        # All participants individually
+        else:
+
+            for participant in self.participant_ids:
+
+                # check if participant should be skipped 
+                if not participant in exclude_participants:
+                    self.measurement_data[participant]["data"] = self._init_single_participant(participant)
+                    data[participant] = self.measurement_data[participant]["data"].get_segment_data(use_vanilla=use_vanilla, filter_data=filter_data, filter_by_corr_coeff_dict=filter_by_corr_coeff_dict, corr_coeff_threshold=corr_coeff_threshold, get_first_segment=get_first_segment, after_event_type_only=after_event_type_only,exclude_areas=exclude_areas,exclude_segments=exclude_segments)
+                    self.measurement_data[participant].pop("data",None)
+
         return data 
     
     
@@ -705,7 +818,7 @@ class MeasurementData:
         
         # go through all participants, areas and segments
         for participant in data_dict:
-            for area in data_dict[participant]:
+            for area in self.available_areas: ######  data_dict[participant]:
                 for segment in data_dict[participant][area]:
                     
                     # rolling

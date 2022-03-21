@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np 
 import pickle 
 import json 
+import glob 
+import os 
 from scipy.spatial.transform import Rotation as R
 
 def read_normalized_json_to_df(filepath):
@@ -239,3 +241,33 @@ def eye_outlier_removal_zero_values(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, pa
 
     return pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, info_df, outlier_df
 
+
+
+def validate_participant_seen_areas(eyetracking_data_paths, exclude_participant_ids = None):
+    '''
+    Check which areas a participant has seen during the experiment. 
+    '''
+
+    # get the participant ids from all eyetracking data locations
+    participant_ids = []
+    participant_paths = []
+    for eyetracking_path in eyetracking_data_paths:
+        participant_paths += glob.glob(eyetracking_path + "*.txt")
+    participant_ids = [os.path.basename(path).split("_EyeTracking_")[0] for path in participant_paths]
+    participant_ids = list(set(participant_ids))
+
+    # search for data per participant 
+    for participant in participant_ids:
+        
+        if (exclude_participant_ids is not None) and (participant in exclude_participant_ids):
+            continue
+
+        # eyetracking data files
+        eyetracking_data = []
+        for path in eyetracking_data_paths:
+            eyetracking_data += glob.glob(path + "/" + str(participant) + "*.txt")
+
+        # Participant did not see all areas (Training, Mountain Road, Country Road, Westbrueck, Autobahn)
+        if len(eyetracking_data) < 5:
+            print("\nParticipant", participant, "only has reduced number of segments available in eye tracking data:", [os.path.basename(path).split("_EyeTracking_")[1] for path in eyetracking_data])
+  
