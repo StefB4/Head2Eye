@@ -86,7 +86,7 @@ def eye_outlier_removal_sigma(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, m=1.5):
     # check for sample clusters
     outlier_df['clusters'] = (outlier_df['outlier_index']-1 != outlier_df['outlier_index'].shift()).cumsum()
 
-    for cluster in range(1, outlier_df.clusters.max()+1):
+    for cluster in range(1, outlier_df['clusters'].max()+1):
 
         min_c = np.min(outlier_df.outlier_index[outlier_df.clusters == cluster])
         max_c = np.max(outlier_df.outlier_index[outlier_df.clusters == cluster])
@@ -171,7 +171,7 @@ def eye_outlier_removal_zero_values(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, pa
     
     # get outlier cluster names 
     outlier_clusters = bools_df.loc[bools_df["is_outlier"],"all_clusters"].unique()
-    
+
     # change values in data for each outlier cluster 
     for cluster in outlier_clusters:
 
@@ -186,31 +186,43 @@ def eye_outlier_removal_zero_values(pos_x, pos_y, pos_z, dir_x, dir_y, dir_z, pa
  
         # min edge case, use value from the right  
         if min_c == 0:
-            pos_x[min_c:max_c+padding+1] = pos_x[max_c+padding]
-            pos_y[min_c:max_c+padding+1] = pos_y[max_c+padding]
-            pos_z[min_c:max_c+padding+1] = pos_z[max_c+padding]
-            dir_x[min_c:max_c+padding+1] = dir_x[max_c+padding]
-            dir_y[min_c:max_c+padding+1] = dir_y[max_c+padding]
-            dir_z[min_c:max_c+padding+1] = dir_z[max_c+padding]
+            
+            right_bound = max_c+padding
+            if right_bound >= len(pos_x):
+                print("\033[93mEyeOutlierRemovalZeroValues: WARNING. Cluster spans entire segment.\033[0m")
+                right_bound = len(pos_x) - 1
+
+            pos_x[min_c:right_bound+1] = pos_x[right_bound]
+            pos_y[min_c:right_bound+1] = pos_y[right_bound]
+            pos_z[min_c:right_bound+1] = pos_z[right_bound]
+            dir_x[min_c:right_bound+1] = dir_x[right_bound]
+            dir_y[min_c:right_bound+1] = dir_y[right_bound]
+            dir_z[min_c:right_bound+1] = dir_z[right_bound]
             
             # add info 
-            info_df.loc[cluster, 'Length incl. padding'] = max_c + padding - min_c
-            info_df.loc[cluster, 'Amount of data (incl. padding) (%)'] = (max_c + padding - min_c)/len(pos_x)*100
+            info_df.loc[cluster, 'Length incl. padding'] = right_bound - min_c
+            info_df.loc[cluster, 'Amount of data (incl. padding) (%)'] = (right_bound - min_c)/len(pos_x)*100
         
             
             
         # max edge case, use value from the left 
         elif max_c == len(pos_x)-1:
-            pos_x[min_c-padding:max_c+1] = pos_x[min_c-padding]
-            pos_y[min_c-padding:max_c+1] = pos_y[min_c-padding] 
-            pos_z[min_c-padding:max_c+1] = pos_z[min_c-padding] 
-            dir_x[min_c-padding:max_c+1] = dir_x[min_c-padding]
-            dir_y[min_c-padding:max_c+1] = dir_y[min_c-padding] 
-            dir_z[min_c-padding:max_c+1] = dir_z[min_c-padding] 
+
+            left_bound = min_c-padding
+            if left_bound < 0:
+                print("EyeOutlierRemovalZeroValues: WARNING. Cluster spans entire segment.")
+                left_bound = 0
+
+            pos_x[left_bound:max_c+1] = pos_x[left_bound]
+            pos_y[left_bound:max_c+1] = pos_y[left_bound] 
+            pos_z[left_bound:max_c+1] = pos_z[left_bound] 
+            dir_x[left_bound:max_c+1] = dir_x[left_bound]
+            dir_y[left_bound:max_c+1] = dir_y[left_bound] 
+            dir_z[left_bound:max_c+1] = dir_z[left_bound] 
             
             # add info 
-            info_df.loc[cluster, 'Length incl. padding'] = max_c - min_c - padding
-            info_df.loc[cluster, 'Amount of data (incl. padding) (%)'] = (max_c - (min_c - padding))/len(pos_x)*100
+            info_df.loc[cluster, 'Length incl. padding'] = max_c - left_bound
+            info_df.loc[cluster, 'Amount of data (incl. padding) (%)'] = (max_c - left_bound)/len(pos_x)*100
             
         # in between case 
         else:

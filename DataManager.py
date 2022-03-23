@@ -172,7 +172,7 @@ class ParticipantData:
             elif "TrainingScene" in filename:
                 token = "TrainingScene"
             else:  # not defined 
-                print("ParticipantData: WARNING. Found undefined area token in filename " + filename + "!")
+                print("\033[93mParticipantData: WARNING. Found undefined area token in filename " + filename + "!\033[0m")                
                 continue # in the loop     
             data[token] = {}
             data[token]["filename"] = filename
@@ -214,21 +214,17 @@ class ParticipantData:
         self.available_areas = list(self.eyetracking_data.keys())
         self.available_areas = [area for area in self.available_areas if area in VALID_AREA_NAMES] # make sure extracted names are valid
         if len(self.available_areas) < 4:
-            print("ParticipantData: WARNING. Eye tracking data does not contain all areas, but only:", self.available_areas)
+            print("\033[93mParticipantData: WARNING. Eye tracking data does not contain all areas, but only:", self.available_areas, "\033[0m")
         if (sorted(self.available_areas) != sorted(list(self.input_data.keys()))) or (sorted(self.available_areas) != sorted(list(self.scene_data.keys()))):
-            print("ParticipantData: WARNING. The available areas in eye tracking, input or scene data do not correspond.")
+            print("\033[93mParticipantData: WARNING. The available areas in eye tracking, input or scene data do not correspond.\033[0m")
             print("EyeTracking Available Areas:",self.available_areas)
             print("Input Available Areas:",list(self.input_data.keys()))
             print("Scene Available Areas:",list(self.scene_data.keys()))
-
-
-        
-        
-        
+                
     def _extract_event_information(self):
         
         if len(self.scene_data.keys()) < 4:
-            print("ParticipantData: WARNING. Participant", self.participant_id, "only has event information for", self.scene_data.keys())
+            print("\033[93mParticipantData: WARNING. Participant", self.participant_id, "only has event information for", self.scene_data.keys(), "\033[0m")
 
         # Extract most important event information 
         # Some participant data contains "TrainingScene" data, some does not, hence take info from keys of top level dict entry
@@ -248,13 +244,13 @@ class ParticipantData:
         
         
         # Copy of entire dataframe input dataframe to prepare processing
-        for area in self.available_areas: ###### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas:
             self.eyetracking_data[area]["processed_df"] = self.eyetracking_data[area]["full_df"].copy(deep=True)
             self.eyetracking_data[area]["processed_df"].drop(columns=["TobiiTimeStamp","FPS","hitObjects","RightEyeIsBlinkingWorld","RightEyeIsBlinkingLocal","LeftEyeIsBlinkingWorld","LeftEyeIsBlinkingLocal"],inplace=True)
             self.eyetracking_data[area]["processed_df"]["path_segment_label"] = -9 # event label 
 
         # Give label to individual path segments, -9 is event label 
-        for area in self.available_areas: ##### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: 
             for event_idx in range(len(self.scene_data[area]["events"]) + 1):
                 cond = None 
                 if event_idx == 0: # find all datapoints with timestamps before event start timestamp 
@@ -268,7 +264,7 @@ class ParticipantData:
                 self.eyetracking_data[area]["processed_df"].loc[cond, "path_segment_label"] = event_idx
 
         # Extract path segments, add timestamps beginning at zero 
-        for area in self.available_areas: ##### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: 
             self.eyetracking_data[area]["path_segments_no_resample"] = {}
             for label in self.eyetracking_data[area]["processed_df"]["path_segment_label"].unique():
                 if (label != -9):
@@ -299,7 +295,7 @@ class ParticipantData:
 
         if self.verbose:
             print("ParticipantData: Resampled path segments (excl. events):")
-        for area in self.available_areas: ######  ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: 
 
             self.eyetracking_data[area]["path_segments_resampled"] = {}
             for segment in self.eyetracking_data[area]["path_segments_no_resample"]:
@@ -366,7 +362,7 @@ class ParticipantData:
     def _construct_segment_data(self):
         
         # extract most important infos
-        for area in self.available_areas: ##### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas:
             self.golden_segment_data_vanilla[area] = {}
             for segment in self.eyetracking_data[area]["path_segments_resampled"]:
                 self.golden_segment_data_vanilla[area][segment] = self.eyetracking_data[area]["path_segments_resampled"][segment].copy(deep = True)
@@ -375,7 +371,7 @@ class ParticipantData:
     def _construct_event_info(self):
     
         # extract event infos 
-        for area in self.available_areas: ###### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: 
             self.golden_event_info[area] = {}
             for event in self.scene_data[area]["events"]:
                 self.golden_event_info[area][event] = {}
@@ -387,7 +383,7 @@ class ParticipantData:
     def apply_reference_data(self, ref_data_dict):
         
         self.golden_segment_data_ref_applied = {}
-        for area in self.available_areas: #######  ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+        for area in self.available_areas: 
             
             self.golden_segment_data_ref_applied[area] = {}
             
@@ -460,7 +456,7 @@ class ParticipantData:
                 inp_dir_unity_y = self.golden_segment_data_ref_applied[area][segment]["NoseVector.y"]
                 inp_dir_unity_z = self.golden_segment_data_ref_applied[area][segment]["NoseVector.z"]
                 if REF_APPLY_CONSIDER_ROLL:
-                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions_consider_roll(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z) 
+                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions_consider_roll(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z,False) 
                 else:
                     res_dir_x, res_dir_y, res_dir_z = create_relative_directions(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_dir_unity_x,ref_dir_unity_y,ref_dir_unity_z,method="anglediff_sphere_coords") # method="unit_sphere_rotation"
                 self.golden_segment_data_ref_applied[area][segment]["NoseVector.x"] = res_dir_x 
@@ -472,7 +468,7 @@ class ParticipantData:
                 inp_dir_unity_y = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.y"]
                 inp_dir_unity_z = self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.z"]
                 if REF_APPLY_CONSIDER_ROLL:
-                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions_consider_roll(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z) 
+                    res_dir_x, res_dir_y, res_dir_z = create_relative_directions_consider_roll(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z,False) 
                 else:
                     res_dir_x, res_dir_y, res_dir_z = create_relative_directions(inp_dir_unity_x,inp_dir_unity_y,inp_dir_unity_z,ref_dir_unity_x,ref_dir_unity_y,ref_dir_unity_z,method="anglediff_sphere_coords") # method="unit_sphere_rotation"
                 self.golden_segment_data_ref_applied[area][segment]["EyeDirWorldCombined.x"] = res_dir_x
@@ -519,7 +515,7 @@ class ParticipantData:
                 if self.verbose:
                     print("ParticipantData: Filtering data by Correlation Coefficients with threshold " + str(corr_coeff_threshold) + ".")
                 
-                for area in self.available_areas: ####### ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+                for area in self.available_areas: 
                     for segment in copy_from_data[area]:
                         
                         # use data, as corr coeffs are bigger than threshold for all measured values in that segment
@@ -550,7 +546,7 @@ class ParticipantData:
                     print("ParticipantData: Filtering data with manual settings.")
                
 
-                for area in self.available_areas: ########  ["Westbrueck","MountainRoad","CountryRoad","Autobahn"]:
+                for area in self.available_areas: 
                     
                     # check that area is wished 
                     if area not in exclude_areas:
@@ -705,8 +701,8 @@ class MeasurementData:
         
         for idx, participant in enumerate(self.participant_ids):
             
-            if idx % 10 == 0 and idx > 0:
-                print("MeasurementData: Generating Participant Data", idx, "out of", len(self.participant_ids)) 
+            if (idx + 1) % 10 == 0:
+                print("MeasurementData: Generating Participant Data", idx + 1, "out of", len(self.participant_ids)) 
 
             # Generate participant data and store 
             self.measurement_data[participant]["data"] = self._init_single_participant(participant)
@@ -749,7 +745,11 @@ class MeasurementData:
         # All data in memory
         if self.keep_participants_in_memory:
             print("MeasurementData: Applying reference data to all participants in memory...")
-            for participant in self.participant_ids:
+            for idx, participant in enumerate(self.participant_ids):
+
+                if (idx + 1) % 10 == 0:
+                    print("MeasurementData: Applying Reference Data for Participant", idx + 1, "out of", len(self.participant_ids)) 
+
                 self.measurement_data[participant]["data"].apply_reference_data(reference_data)
                 self.measurement_data[participant]["data"].update_bootstrapped_data()
             print("MeasurementData: Done applying reference data to all participants in memory.")
@@ -757,7 +757,11 @@ class MeasurementData:
         # Process participants individually 
         else:
             print("MeasurementData: Applying reference data to all participants individually...")
-            for participant in self.participant_ids:
+            for idx, participant in enumerate(self.participant_ids):
+                
+                if (idx + 1) % 10 == 0:
+                    print("MeasurementData: Applying Reference Data for Participant", idx + 1, "out of", len(self.participant_ids)) 
+
                 self.measurement_data[participant]["data"] = self._init_single_participant(participant)
                 self.measurement_data[participant]["data"].apply_reference_data(reference_data)
                 self.measurement_data[participant]["data"].update_bootstrapped_data()
@@ -818,7 +822,7 @@ class MeasurementData:
         
         # go through all participants, areas and segments
         for participant in data_dict:
-            for area in self.available_areas: ######  data_dict[participant]:
+            for area in self.available_areas: 
                 for segment in data_dict[participant][area]:
                     
                     # rolling

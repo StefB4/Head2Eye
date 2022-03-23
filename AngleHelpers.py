@@ -664,7 +664,7 @@ def create_relative_direction_consider_roll(inp_dir_unity,ref_angles_unity,log_v
     return final_dir_unity
 
 
-def create_relative_directions_consider_roll(inp_unity_x,inp_unity_y,inp_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z):
+def create_relative_directions_consider_roll(inp_unity_x,inp_unity_y,inp_unity_z,ref_angle_unity_x,ref_angle_unity_y,ref_angle_unity_z,log_progress = False):
     '''
     
     Creates for a Pandas Series of Unity x,y,z input directions and Unity reference angles x,y,z
@@ -676,7 +676,8 @@ def create_relative_directions_consider_roll(inp_unity_x,inp_unity_y,inp_unity_z
     Return Unity x,y,z series for the relative directions.
     '''
     
-    print("Creating relative directions considering roll.")
+    if log_progress:
+        print("Creating relative directions considering roll.")
     
     # Progress bar 
     tqdm.pandas()
@@ -711,7 +712,11 @@ def create_relative_directions_consider_roll(inp_unity_x,inp_unity_y,inp_unity_z
         return arg
 
     # Apply transform 
-    dataframe = dataframe.progress_apply(lambda row: apply_dir_calc(row), axis=1)
+    if log_progress:
+        dataframe = dataframe.progress_apply(lambda row: apply_dir_calc(row), axis=1)
+    else:
+        dataframe = dataframe.apply(lambda row: apply_dir_calc(row), axis=1)
+
     
     return dataframe["final_x"], dataframe["final_y"], dataframe["final_z"]
     

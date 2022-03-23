@@ -1,0 +1,1 @@
+{"AverageSceneFPS":69.67638397216797,"EventBehavior":[{"EventName":"I_variant","StartofEventTimeStamp":1603102278.7307788,"EndOfEventTimeStamp":1603102281.6550887,"EventDuration":2.9243099689483644,"SuccessfulCompletionState":true,"HitObjectName":""}]}
