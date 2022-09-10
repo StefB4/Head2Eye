@@ -1,1 +1,0 @@
-{"AverageSceneFPS":89.93778228759766,"EventBehavior":[]}

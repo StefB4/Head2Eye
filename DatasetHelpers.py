@@ -75,11 +75,16 @@ def create_seq_to_datapoint_ds(combined_data, input_feature_dim, seq_slice_len, 
 
     # Create dataset from full input and target timeseries 
     # The individual timeseries are stacked together (each timeseries is a column vector, axis 0)
-    dataset = tf.keras.utils.timeseries_dataset_from_array(
+    # In TF 2.4.0 batch_size = None is not supported, so batch to 1 here and squeeze batch dim later
+    dataset = timeseries_dataset_from_array(
       data = combined_data, targets = None, sequence_length = seq_slice_len, sequence_stride=1, sampling_rate=1,
-      batch_size=None, shuffle=False, seed=None, start_index=None, end_index=None
+      batch_size=1, shuffle=False, seed=None, start_index=None, end_index=None
       # for data: Axis 0 is expected to be the time dimension.
     )
+
+    # remove batch dim 1 for computations below
+    dataset = dataset.map(lambda x: tf.squeeze(x))
+    
 
     # Map purely input dataset to dataset that contains input and target, split at input_feature_dim
     # For target use only very last value
@@ -166,11 +171,15 @@ def create_pretrain_ds(input_data, seq_slice_len, mask_mode = "pretrain", batch_
 
     # Create dataset from full input timeseries 
     # The individual timeseries are stacked together (each timeseries is a column vector, axis 0)
-    dataset = tf.keras.utils.timeseries_dataset_from_array(
+    # In TF 2.4.0 batch_size = None is not supported, so batch to 1 here and squeeze batch dim later
+    dataset = timeseries_dataset_from_array(
       data = input_data, targets = None, sequence_length = seq_slice_len, sequence_stride=1, sampling_rate=1,
-      batch_size=None, shuffle=False, seed=None, start_index=None, end_index=None
+      batch_size=1, shuffle=False, seed=None, start_index=None, end_index=None
       # for data: Axis 0 is expected to be the time dimension.
     )
+
+    # remove batch dim 1 for computations below
+    dataset = dataset.map(lambda x: tf.squeeze(x))
          
     
     # Map input dataset to dataset that contains input (and mask) and target (target is copy of input)

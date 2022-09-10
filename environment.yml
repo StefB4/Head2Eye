@@ -1,4 +1,4 @@
-name: Body2Eye
+name: Head2Eye
 channels:
   - defaults
 dependencies:
@@ -115,4 +115,3 @@ dependencies:
     - werkzeug==1.0.1
     - widgetsnbextension==3.5.1
     - wrapt==1.12.1
-prefix: /Users/stefan/opt/anaconda3/envs/Body2Eye
