@@ -1,3 +1,3 @@
 # Head2Eye
 
-LeL
+Predict eye movements from head movements
